@@ -10,3 +10,8 @@ func GetMD5Hash(text string) string {
 	hasher.Write([]byte(text))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
+
+//TODO: Create safe password with salt
+func GeneratePassword(passwd string) string {
+	return passwd
+}

@@ -1,22 +1,36 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/log"
 	"gopkg.in/yaml.v2"
 	"os"
 	"runtime"
 )
+
 var configInstance *Config
+
 type Config struct {
-	Alarm struct{
+	Alarm struct {
 		Processor float64 `yaml:"processor"`
-		Memory float64 `yaml:"memory"`
-		Reset  bool `yaml:"reset"`
+		Memory    float64 `yaml:"memory"`
+		Reset     bool    `yaml:"reset"`
 	} `yaml:"alarm"`
-	App struct{
-		WorkingDir    string
-		OS            string
-		MaxProcessors int `yaml:"processors"`
-		ProcessID    int
+	Tweaks struct {
+		Ballast       bool   `yaml:"ballast"`
+		BallastSize   string `yaml:"ballastsize"`
+		MaxProcessors int    `yaml:"processors"`
+	} `yaml:"tweaks"`
+	Log struct {
+		WriteFile bool   `yaml:"writefile"`
+		MaxSize   int    `yaml:"size"` // megabytes
+		MaxAge    int    `yaml:"age"`  //days
+		Level     string `yaml:"level"`
+		Path      string `yaml:"path"`
+	} `yaml:"log"`
+	App struct {
+		WorkingDir string
+		OS         string
+		ProcessID  int
 		LogoMini   string `yaml:"logomini"`
 		LogoLarge  string `yaml:"logolarge"`
 		Title      string `yaml:"title"`
@@ -24,52 +38,48 @@ type Config struct {
 		Assets     string `yaml:"assets"`
 		Static     string `yaml:"static"`
 		SessionAge int    `yaml:"sessionage"`
+		Language   string `yaml:"language"`
 	} `yaml:"app"`
 	Server struct {
-		Port string  `yaml:"port"`
-		Host string  `yaml:"host"`
-		Cert string  `yaml:"cert"`
-		Key  string  `yaml:"key"`
-		HTTPS bool `yaml:"https"`
+		Port  string `yaml:"port"`
+		Host  string `yaml:"host"`
+		Cert  string `yaml:"cert"`
+		Key   string `yaml:"key"`
+		HTTPS bool   `yaml:"https"`
 	} `yaml:"server"`
 	Database struct {
-		Type string `yaml:"type"`
-		Username string `yaml:"user"`
-		Password string `yaml:"pass"`
-		Server string `yaml:"server"`
-		Cache string `yaml:"cache"`
+		Type      string `yaml:"type"`
+		Username  string `yaml:"user"`
+		Password  string `yaml:"pass"`
+		Server    string `yaml:"server"`
+		Cache     string `yaml:"cache"`
 		CacheSize string `yaml:"cachesize"`
-		Debug string `yaml:"debug"`
-		Database string `yaml:"database"`
-		SSLMode string `yaml:"sslmode"`
+		Debug     string `yaml:"debug"`
+		Database  string `yaml:"database"`
+		SSLMode   string `yaml:"sslmode"`
 	} `yaml:"database"`
 }
 
 func GetConfig() Config {
-	if configInstance == nil{
+	if configInstance == nil {
 		configInstance = &Config{}
 		f, err := os.Open("./config.yml")
 		if err != nil {
-			Critical(err)
+			log.Critical(err)
 		}
 		decoder := yaml.NewDecoder(f)
 		err = decoder.Decode(&configInstance)
 		if err != nil {
-			Critical(err)
+			log.Critical(err)
 		}
 
 		configInstance.App.WorkingDir, err = os.Getwd()
 		if err != nil {
-			Critical(err)
+			log.Critical(err)
 		}
 		configInstance.App.OS = runtime.GOOS
 		configInstance.App.ProcessID = os.Getpid()
 
-		if configInstance.App.MaxProcessors < 1{
-			runtime.GOMAXPROCS(runtime.NumCPU())
-		}else{
-			runtime.GOMAXPROCS(configInstance.App.MaxProcessors)
-		}
 	}
 	return *configInstance
 }

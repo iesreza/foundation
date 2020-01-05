@@ -6,12 +6,10 @@ alarm:
 
 # App configurations
 app:
-
   logomini: <b>F</b>oundation
   logolarge: Foundation
   title: Foundation
-
-  processors: 0
+  language: en-GB
   path: ./httpdocs
   assets: ./httpdocs/assets
   static: ./httpdocs/static
@@ -35,3 +33,17 @@ database:
   cacheSize: 1000
   debug: true
   sslmode: "disable"
+
+#Log to file
+log:
+  writefile: true
+  size: 5
+  age: 7
+  level: debug
+  path: ./logs
+
+#Tweaks
+tweaks:
+  ballast: true
+  ballastsize: 100mb
+  processors: 0

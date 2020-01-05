@@ -3,21 +3,20 @@ package main
 import (
 	"github.com/iesreza/foundation/components/dashboard"
 	"github.com/iesreza/foundation/httpdocs/templates/adminlte"
+	"github.com/iesreza/foundation/language"
+	"github.com/iesreza/foundation/log"
 	"github.com/iesreza/foundation/system"
-	"github.com/iesreza/gutil/log"
-	"time"
 )
 
+func main() {
+	system.PreBoot()
 
-func main()  {
-
-	log.Error("hi")
 	adminlte.Register()
 	dashboard.Register()
+	language.Register()
+
 	system.Boot()
+	log.Info("Foundation Has Booted")
+	system.ListenCLI()
 
-
-	for{
-		time.Sleep(1*time.Minute)
-	}
 }

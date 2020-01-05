@@ -1,6 +1,7 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/log"
 	"os/exec"
 	"strings"
 )
@@ -14,7 +15,7 @@ func Run(command string, args ...string) string {
 	c := exec.Command(command, args...)
 	out, err := c.Output()
 	if err != nil {
-		Error(err,"Unable to run %s %v", command, args)
+		log.Error(err, "Unable to run %s %v", command, args)
 	}
 	return string(out)
 }

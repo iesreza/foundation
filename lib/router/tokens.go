@@ -4,7 +4,6 @@ import (
 	"github.com/iesreza/gutil/log"
 	"regexp"
 	"strings"
-	"time"
 )
 
 var matches = map[string]*regexp.Regexp{
@@ -82,4 +81,3 @@ func (t *token) isMatch(input string) bool {
 	}
 	return false
 }
-

@@ -34,6 +34,9 @@ type Route struct {
 }
 
 func GetInstance() handler {
+	if !gc {
+		sessionGC()
+	}
 	return defaultRouter
 }
 func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
@@ -55,6 +58,9 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 			access = false
 		}
 	}
+	if req.terminated {
+		return
+	}
 	if access {
 		for _, r := range handle.routes {
 
@@ -75,17 +81,16 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 
 	for _, item := range handle.middleware {
 		if !item(*req) {
-			if handle.onElse != nil {
+			if handle.onElse != nil && !req.terminated {
 				handle.onElse(*req)
 			}
 			return false
 		}
 	}
 
-
 	if handle.domainMatch != nil {
 		if !handle.domainMatch.MatchString(req.Req().Host) {
-			if handle.onElse != nil {
+			if handle.onElse != nil && !req.terminated {
 				handle.onElse(*req)
 			}
 			return false
@@ -95,14 +100,14 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 	}
 	if handle.method != "" && strings.ToLower(req.request.Method) != strings.ToLower(handle.method) {
 		if handle.method != "*" {
-			if handle.onElse != nil {
+			if handle.onElse != nil && !req.terminated {
 				handle.onElse(*req)
 			}
 			return false
 		}
 	}
 	if !handle.group && len(uriTokens) > len(handle.tokens) {
-		if handle.onElse != nil {
+		if handle.onElse != nil && !req.terminated {
 			handle.onElse(*req)
 		}
 		return false
@@ -145,12 +150,12 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 			}
 			pointer++
 			if pointer == len(uriTokens) {
-				if handle.onElse != nil {
+				if handle.onElse != nil && !req.terminated {
 					handle.onElse(*req)
 				}
 				return false
 			}
-			if !handle.tokens[i].isMatch(uriTokens[pointer]) {
+			if !handle.tokens[i].isMatch(uriTokens[pointer]) && !req.terminated {
 				if handle.onElse != nil {
 					handle.onElse(*req)
 				}
@@ -164,7 +169,7 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 		}
 
 		if !handle.group && matched+lazyMatched != len(uriTokens) {
-			if handle.onElse != nil {
+			if handle.onElse != nil && !req.terminated {
 				handle.onElse(*req)
 			}
 			return false
@@ -192,7 +197,7 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 			return false
 		}
 	}
-	if handle.Callback != nil {
+	if handle.Callback != nil && !req.terminated {
 		req.Matched = true
 		handle.Callback(*req)
 	}
