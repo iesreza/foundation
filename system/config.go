@@ -1,7 +1,7 @@
 package system
 
 import (
-	"github.com/iesreza/foundation/log"
+	"github.com/iesreza/foundation/lib/log"
 	"gopkg.in/yaml.v2"
 	"os"
 	"runtime"
@@ -9,6 +9,13 @@ import (
 
 var configInstance *Config
 
+type Log struct {
+	WriteFile bool   `yaml:"writefile"`
+	MaxSize   int    `yaml:"size"` // megabytes
+	MaxAge    int    `yaml:"age"`  //days
+	Level     string `yaml:"level" short:"l" long:"level" description:"log level" choice:"critical" choice:"error" choice:"warning" choice:"info" choice:"notice" choice:"debug" default:"debug"`
+	Path      string `yaml:"path"`
+}
 type Config struct {
 	Alarm struct {
 		Processor float64 `yaml:"processor"`
@@ -20,13 +27,7 @@ type Config struct {
 		BallastSize   string `yaml:"ballastsize"`
 		MaxProcessors int    `yaml:"processors"`
 	} `yaml:"tweaks"`
-	Log struct {
-		WriteFile bool   `yaml:"writefile"`
-		MaxSize   int    `yaml:"size"` // megabytes
-		MaxAge    int    `yaml:"age"`  //days
-		Level     string `yaml:"level"`
-		Path      string `yaml:"path"`
-	} `yaml:"log"`
+	Log Log `yaml:"log"`
 	App struct {
 		WorkingDir string
 		OS         string

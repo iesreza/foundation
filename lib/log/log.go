@@ -3,7 +3,8 @@ package log
 import (
 	"fmt"
 	"github.com/iesreza/foundation/lib"
-	"github.com/iesreza/foundation/log/logger"
+	"github.com/iesreza/foundation/lib/log/logger"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -48,17 +49,17 @@ type Logger struct {
 func ParseLevel(expr string) Level {
 	expr = strings.TrimSpace(strings.ToLower(expr))
 	switch expr {
-	case "critical":
+	case "critical", "crit":
 		return CriticalLevel
-	case "error":
+	case "error", "erro":
 		return ErrorLevel
-	case "warning":
+	case "warning", "warn":
 		return WarningLevel
-	case "notice":
+	case "notice", "noti":
 		return NoticeLevel
 	case "info":
 		return InfoLevel
-	case "debug":
+	case "debug", "debu":
 		return DebugLevel
 	default:
 		return NoticeLevel
@@ -67,6 +68,7 @@ func ParseLevel(expr string) Level {
 
 func SetSettings(logSettings *Logger) {
 	settings = logSettings
+	log.SetLogLevel(logger.LogLevel(settings.Level))
 }
 
 func Register(logSettings *Logger) {
@@ -85,7 +87,7 @@ func Rotate() {
 		}
 		logFileName = settings.Path + "/" + time.Now().Format("2006-01-02") + ".log"
 		var err error
-		writer, err = os.OpenFile(logFileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		writer, err = os.OpenFile(logFileName, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0600)
 		if err != nil {
 			fmt.Println("Cannot write log file:")
 			panic(err)
@@ -304,4 +306,81 @@ func writeToFile(level Level, message string) {
 		writer.WriteString("\r\n" + message)
 		writerLock.Unlock()
 	}
+}
+
+func Read(lines int, level Level) {
+	if !settings.WriteToFile {
+		log.Error("unable to show history of logs. write log to file is disabled")
+		return
+	}
+
+	printable := ""
+	var cursor int64 = 0
+	stat, _ := writer.Stat()
+	filesize := stat.Size()
+	lastPiece := io.SeekEnd
+	breakLines := false
+	for i := 0; i < lines; i++ {
+		line := ""
+		for {
+			cursor -= 1
+			if cursor <= -filesize { // stop if we are at the begining
+				breakLines = true
+				break
+			}
+			writer.Seek(cursor, lastPiece)
+
+			char := make([]byte, 1)
+			writer.Read(char)
+
+			if cursor != -1 && (char[0] == 10 || char[0] == 13) { // stop if we find a line
+				break
+			}
+
+			line = fmt.Sprintf("%s%s", string(char), line) // there is more efficient way
+
+			if cursor <= -filesize { // stop if we are at the begining
+				breakLines = true
+				break
+			}
+		}
+
+		if len(line) > 5 {
+			msgLevel := ParseLevel(line[1:5])
+			if msgLevel <= level {
+
+				printable = "\r\n" + logger.Colors[logger.LogLevel(msgLevel)] + line + "\033[0m" + printable
+				if breakLines {
+					break
+				}
+				continue
+			}
+
+		}
+		if breakLines {
+			break
+		}
+		if i > 0 {
+			i--
+		}
+	}
+
+	fmt.Println(printable)
+
+}
+
+func Clear() {
+	writer.Truncate(0)
+	writer.Seek(0, 0)
+	writer.Sync()
+}
+
+func ClearAll() {
+	Clear()
+	filepath.Walk(settings.Path, func(path string, file os.FileInfo, err error) error {
+		if !file.IsDir() {
+			os.Remove(path)
+		}
+		return nil
+	})
 }

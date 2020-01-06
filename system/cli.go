@@ -3,26 +3,30 @@ package system
 import (
 	"bufio"
 	"fmt"
-	"github.com/iesreza/foundation/log"
-	"github.com/jessevdk/go-flags"
+	"github.com/iesreza/foundation/lib/log"
+	"github.com/iesreza/go-flags"
 	"os"
+	"reflect"
 	"strings"
+	"time"
 )
 
 type cli struct {
 	Command   string
 	Structure interface{}
 	OnCall    func(command string, data interface{})
+	Help      string
 }
 
 var commandList = map[string]*cli{}
 
-func RegisterCLI(command string, structure interface{}, onCall func(command string, data interface{})) {
+func RegisterCLI(command string, structure interface{}, onCall func(command string, data interface{}), help string) {
 
 	commandList[command] = &cli{
 		Command:   command,
 		Structure: structure,
 		OnCall:    onCall,
+		Help:      help,
 	}
 
 }
@@ -38,10 +42,9 @@ func AliasCLI(command string, alias ...string) {
 func ListenCLI() {
 	fmt.Println("Listen for commands")
 	fmt.Println("Type help to see commands")
+
 	for {
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Print("\n>")
-		cmd, _ := reader.ReadString('\n')
+		cmd := WaitForConsole(GetConfig().App.Title + ">")
 		if strings.TrimSpace(cmd) != "" {
 			if !TryParseCommand(cmd) {
 				log.Error("Invalid command: " + cmd)
@@ -58,14 +61,64 @@ func TryParseCommand(cmd string) bool {
 			opt := cli.Structure
 			var parser = flags.NewParser(opt, flags.Default)
 			fields := strings.Fields(strings.Replace(cmd, command, "", 1))
-			_, err := parser.ParseArgs(fields)
+			containArgs := false
+			for _, item := range fields {
+				if item[0] == '-' {
+					containArgs = true
+					break
+				}
+			}
+
+			v := reflect.ValueOf(opt)
+			i := reflect.Indirect(v)
+			s := i.Type()
+
+			fieldsNeededReview := 0
+			for r := 0; r < s.NumField(); r++ {
+				if s.Field(r).Tag.Get("short") != "" && s.Field(r).Tag.Get("default") == "" {
+					fieldsNeededReview++
+				}
+			}
+
+			if !containArgs && fieldsNeededReview > 0 {
+				return false
+			}
+			_, err := parser.ParseArgs(cli.Command, fields)
 			if err == nil {
 				cli.OnCall(command, opt)
-			} else {
-				fmt.Println(err)
 			}
 			return true
 		}
 	}
 	return false
+}
+
+func WaitForConsole(hint string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("\n" + hint)
+	cmd, _ := reader.ReadString('\n')
+	return cmd
+}
+
+func WaitForConsoleTimeout(hint string, timeout time.Duration, onTimeout func()) string {
+
+	var cmd string
+	ch := make(chan int)
+
+	go func() {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("\n" + hint)
+		cmd, _ = reader.ReadString('\n')
+		ch <- 1
+	}()
+
+	select {
+	case <-ch:
+		return cmd
+	case <-time.After(timeout):
+		if onTimeout != nil {
+			onTimeout()
+		}
+		return ""
+	}
 }

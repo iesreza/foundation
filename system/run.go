@@ -1,7 +1,7 @@
 package system
 
 import (
-	"github.com/iesreza/foundation/log"
+	"github.com/iesreza/foundation/lib/log"
 	"os/exec"
 	"strings"
 )

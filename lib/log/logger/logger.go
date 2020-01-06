@@ -16,7 +16,7 @@ import (
 
 var (
 	// Map for the various codes of colors
-	colors map[LogLevel]string
+	Colors map[LogLevel]string
 
 	// Map from format's placeholders to printf verbs
 	phfs map[string]string
@@ -211,7 +211,7 @@ func (w *Worker) Log(level LogLevel, calldepth int, info *Info) string {
 
 	if w.Color != 0 {
 		buf := &bytes.Buffer{}
-		buf.Write([]byte(colors[level]))
+		buf.Write([]byte(Colors[level]))
 		buf.Write([]byte(info.Output(w.format)))
 		buf.Write([]byte("\033[0m"))
 		w.Minion.Output(calldepth+1, buf.String())
@@ -228,7 +228,7 @@ func colorString(color int) string {
 
 // Initializes the map of colors
 func initColors() {
-	colors = map[LogLevel]string{
+	Colors = map[LogLevel]string{
 		CriticalLevel: colorString(Magenta),
 		ErrorLevel:    colorString(Red),
 		WarningLevel:  colorString(Yellow),

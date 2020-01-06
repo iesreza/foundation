@@ -3,7 +3,7 @@ package dashboard
 import (
 	"fmt"
 	"github.com/iesreza/foundation/httpdocs/templates/adminlte"
-	"github.com/iesreza/foundation/log"
+	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/system"
 	"github.com/iesreza/gutil/path"
 	"html/template"

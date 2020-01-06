@@ -2,6 +2,8 @@ package lib
 
 import (
 	"fmt"
+	"github.com/araddon/dateparse"
+	"github.com/awoodbeck/strftime"
 	"strconv"
 	"strings"
 	"time"
@@ -140,10 +142,37 @@ func (d *Date) Format(expr string) string {
 	return d.Base.Format(expr)
 }
 
+func (d *Date) FormatS(expr string) string {
+	return strftime.Format(&d.Base, expr)
+}
+
 func (d *Date) Unix() int64 {
 	return d.Base.Unix()
 }
 
 func (d *Date) UnixNano() int64 {
 	return d.Base.UnixNano()
+}
+
+func FromString(expr string) (*Date, error) {
+	t, err := dateparse.ParseLocal(expr)
+	if err != nil {
+		return nil, err
+	}
+	return &Date{
+		Base: t,
+	}, nil
+}
+
+func FromTime(t time.Time) *Date {
+	return &Date{
+		Base: t,
+	}
+}
+
+func FromUnix(sec int64) *Date {
+	t := time.Unix(sec, 0)
+	return &Date{
+		Base: t,
+	}
 }

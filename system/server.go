@@ -1,8 +1,8 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/lib/router"
-	"github.com/iesreza/foundation/log"
 	"net/http"
 )
 
@@ -48,13 +48,13 @@ func StartWebServer() {
 
 	RegisterCLI("server.stop", &struct{}{}, func(command string, data interface{}) {
 		Shutdown = true
-		log.Warning("Server has stopped ...")
-	})
+		log.Info("Server has stopped ...")
+	}, "Stop HTTP server")
 
 	RegisterCLI("server.start", &struct{}{}, func(command string, data interface{}) {
 		Shutdown = false
-		log.Warning("Server has started ...")
-	})
+		log.Info("Server has started ...")
+	}, "Start HTTP server")
 }
 
 func redirectTLS(w http.ResponseWriter, r *http.Request) {

@@ -3,7 +3,7 @@ package language
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/iesreza/foundation/log"
+	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/system"
 	"github.com/iesreza/gutil/path"
 	"io/ioutil"
@@ -28,13 +28,13 @@ func Register() {
 	LoadLanguages()
 	system.RegisterCLI("language.default", &struct{}{}, func(command string, data interface{}) {
 		fmt.Println(Default.Name)
-	})
+	}, "Show Default Language")
 
 	system.RegisterCLI("language.available", &struct{}{}, func(command string, data interface{}) {
 		for i, item := range Available {
 			fmt.Printf("%d. %s\r\n", i+1, item.Name)
 		}
-	})
+	}, "Show available languages")
 
 }
 

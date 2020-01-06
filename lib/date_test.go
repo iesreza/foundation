@@ -8,7 +8,7 @@ import (
 
 func TestDate_Calculate(t *testing.T) {
 
-	d, _ := Now().DiffExpr("tomorrow midnight")
+	d, _ := Now().DiffExpr("+1 day midnight")
 	fmt.Println(fmtDuration(d))
 }
 

@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/iesreza/foundation/lib"
+	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/lib/router"
-	"github.com/iesreza/foundation/log"
 	"github.com/ztrue/shutdown"
 	"os"
 	"runtime"
+	"sort"
+	"strings"
 	"time"
 )
 
@@ -54,7 +56,7 @@ func PreBoot() {
 	}
 
 	shutdown.Add(func() {
-		log.Warning("Shutting Down ...")
+		log.Info("Shutting Down ...")
 		//Shutdown event fire
 		for _, item := range onShutdownCallbacks {
 			item()
@@ -62,19 +64,81 @@ func PreBoot() {
 	})
 
 	RegisterCLI("help", &struct{}{}, func(command string, data interface{}) {
+		list := make([]string, len(commandList))
+		c := 0
+		longest := 0
 		for command, _ := range commandList {
-			fmt.Println(command)
+			if len(command) > longest {
+				longest = len(command)
+			}
 		}
-	})
+		for command, v := range commandList {
+			list[c] = command
+			for i := len(command); i < longest+3; i++ {
+				list[c] += " "
+			}
+			list[c] += v.Help
+			c++
+		}
+		sort.Strings(list)
+		fmt.Println("Available Commands:")
+		for _, item := range list {
+			fmt.Println(item)
+		}
+
+		fmt.Println("\r\nUsage:")
+		fmt.Println("command [OPTIONS]")
+		fmt.Println("\r\nHelp:")
+		fmt.Println("command -h")
+	}, "Show help")
+	AliasCLI("help", "?")
+
 	RegisterCLI("exit", &struct{}{}, func(command string, data interface{}) {
-		for _, item := range onShutdownCallbacks {
-			item()
+		response := WaitForConsoleTimeout("Do you want exit? (Y/N)", 5*time.Second, func() {
+			fmt.Println("Confirmation Timed out ... back to normal ...")
+		})
+		response = strings.TrimSpace(strings.ToLower(response))
+		if response == "y" || response == "yes" {
+			for _, item := range onShutdownCallbacks {
+				item()
+			}
+			os.Exit(2)
 		}
-		os.Exit(2)
-	})
+	}, "Exit app")
 
 	RegisterCLI("config.get", &struct{}{}, func(command string, data interface{}) {
 		spew.Dump(GetConfig())
-	})
+	}, "Show config")
 
+	RegisterCLI("log.set", &cfg.Log, func(command string, data interface{}) {
+		cfg := data.(*Log)
+		log.SetSettings(&log.Logger{
+			WriteToFile: cfg.WriteFile,
+			Concurrent:  true,
+			Level:       log.ParseLevel(cfg.Level),
+			MaxAge:      cfg.MaxAge,
+			MaxSize:     cfg.MaxSize,
+			Path:        cfg.Path,
+		})
+		fmt.Println("Log level set to:" + cfg.Level)
+	}, "Set log file verbosity")
+
+	type logLines struct {
+		Lines int    `short:"l" long:"lines" description:"maximum lines of logs to show" default:"100"`
+		Level string `short:"v" long:"level" description:"maximum level of logs to show" choice:"critical" choice:"error" choice:"warning" choice:"info" choice:"notice" choice:"debug" default:"debug"`
+		Test  string
+	}
+	logLineParam := &logLines{}
+	RegisterCLI("log.read", logLineParam, func(command string, data interface{}) {
+		log.Read(data.(*logLines).Lines, log.ParseLevel(data.(*logLines).Level))
+	}, "Read log file")
+
+	RegisterCLI("log.clear", &struct{}{}, func(command string, data interface{}) {
+		fmt.Println("Log cleared ...")
+		log.Clear()
+	}, "Clear current day log")
+	RegisterCLI("log.clearall", &struct{}{}, func(command string, data interface{}) {
+		fmt.Println("All logs has been cleared ...")
+		log.ClearAll()
+	}, "Clear all logs")
 }
