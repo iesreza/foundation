@@ -3,7 +3,6 @@ package lib
 import (
 	"bufio"
 	"fmt"
-	"github.com/iesreza/foundation/lib/log"
 	"os/exec"
 	"strings"
 )
@@ -26,12 +25,8 @@ type RunControl struct {
 	OnFinish func()
 	OnStdout func()
 }
-type cmdOut struct {
-	output []byte
-	error  error
-}
 
-func RunInBackground(ctl RunControl, command string, args ...string) {
+func RunInBackground(command string, args ...string) error {
 	command = strings.TrimSpace(command)
 	if strings.Contains(command, " ") {
 		args = append(strings.Fields(command), args...)
@@ -39,7 +34,7 @@ func RunInBackground(ctl RunControl, command string, args ...string) {
 	cmd := exec.Command(args[0], args[1:]...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Error(err)
+		return err
 	}
 	scanner := bufio.NewScanner(cmdReader)
 	go func() {
@@ -48,9 +43,10 @@ func RunInBackground(ctl RunControl, command string, args ...string) {
 		}
 	}()
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	if err := cmd.Wait(); err != nil {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
