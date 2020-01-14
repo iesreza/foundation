@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Run(command string, args ...string) string {
+func Run(command string, args ...string) (string, error) {
 	command = strings.TrimSpace(command)
 	if strings.Contains(command, " ") {
 		args = append(strings.Fields(command), args...)
@@ -16,9 +16,9 @@ func Run(command string, args ...string) string {
 	c := exec.Command(command, args...)
 	out, err := c.Output()
 	if err != nil {
-		log.Error(err, "Unable to run %s %v", command, args)
+		return "", err
 	}
-	return string(out)
+	return string(out), nil
 }
 
 type RunControl struct {
