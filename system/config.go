@@ -49,6 +49,7 @@ type Config struct {
 		HTTPS bool   `yaml:"https"`
 	} `yaml:"server"`
 	Database struct {
+		Enabled   bool   `yaml:"enabled"`
 		Type      string `yaml:"type"`
 		Username  string `yaml:"user"`
 		Password  string `yaml:"pass"`

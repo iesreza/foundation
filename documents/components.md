@@ -115,3 +115,24 @@ func (component *component) Menu() {
 }
 
 ```
+
+##### function ViewPath() and AssetsPath()
+```go
+// return path of views, default: components/component/views
+func (component component) ViewPath() string {
+	return component.Views
+}
+
+// return path of assets, default: components/component/assets
+func (component component) AssetsPath() string {
+	return component.Assets
+}
+```
+
+##### function GetTemplates()
+```go
+//return templates that is generated using template.ParseFiles. checkout Register()
+func (component component) GetTemplates() *template.Template {
+	return component.Templates
+}
+```

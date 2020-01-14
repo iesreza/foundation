@@ -16,7 +16,9 @@ var Database *xorm.Engine
 func SetupDatabase() {
 	config := GetConfig().Database
 	var err error
-
+	if config.Enabled == false {
+		return
+	}
 	switch strings.ToLower(config.Type) {
 	case "mysql":
 		connectionString := fmt.Sprintf("%s:%s@%s/%s", config.Username, config.Password, config.Server, config.Database)

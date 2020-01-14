@@ -95,6 +95,19 @@ func (r *Request) WriteString(s string) {
 	r.writer.Write([]byte(s))
 }
 
+func (r *Request) WriteObject(obj interface{}) error {
+	if r.terminated {
+		return nil
+	}
+	data, err := json.Marshal(obj)
+	if err == nil {
+		r.writer.Write(data)
+		return nil
+	} else {
+		return err
+	}
+}
+
 type value string
 
 func (r *Request) Req() *http.Request {
