@@ -101,6 +101,7 @@ func (r *Request) WriteObject(obj interface{}) error {
 	}
 	data, err := json.Marshal(obj)
 	if err == nil {
+		r.writer.Header().Set("Content-Type", "application/json")
 		r.writer.Write(data)
 		return nil
 	} else {
