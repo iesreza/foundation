@@ -5,6 +5,6 @@
 
 ```bash
 #first installation
-go get ./
+go get ./...
 go build
 ```
