@@ -11,3 +11,14 @@ How to use:
 #### [Routers](https://github.com/iesreza/foundation/docs/router.md)
 
 
+### Milestone 4 Todo List:
+
+- [ ] Optimize Request object
+- [ ] Make dynamic interface for user management integration
+- [ ] Render Engine: automatically set render engine to server side or client side
+- [ ] Optimize accessing form data
+- [ ] Sanitize form data
+- [ ] Implement expose API (like GraphQL)
+- [ ] Empty Project Builder
+- [ ] Docker image maker
+- [ ] Document everything
