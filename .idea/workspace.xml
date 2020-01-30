@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c6b3034-205e-4392-a7c8-4561edf87f07" name="Default Changelist" comment="">
+    <list default="true" id="7c6b3034-205e-4392-a7c8-4561edf87f07" name="Default Changelist" comment="Fallback check termination">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/router/request.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/router/request.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/router/router.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,10 +46,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/router/router.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2046">
+              <caret line="19" column="10" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/system/router.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+            <state relative-caret-position="68">
+              <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -57,20 +66,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/router/request.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/readme.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="221">
-                <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-              </first_editor>
-              <second_editor />
+            <state relative-caret-position="257">
+              <caret line="98" column="17" selection-start-line="98" selection-start-column="17" selection-end-line="98" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -146,8 +143,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>adminlte/assets</find>
-      <find>adsa</find>
       <find>App</find>
       <find>//</find>
       <find>//js</find>
@@ -167,7 +162,6 @@
       <find>CRIT</find>
       <find>Red</find>
       <find>CriticalLevel</find>
-      <find>write</find>
       <find>struct</find>
       <find>Colors</find>
       <find>walk</find>
@@ -176,6 +170,9 @@
       <find>Routers</find>
       <find>ivodiag</find>
       <find>WriteOb</find>
+      <find>fallback</find>
+      <find>Te</find>
+      <find>write</find>
     </findStrings>
     <replaceStrings>
       <replace>adminlte/assets/img/</replace>
@@ -214,7 +211,6 @@
         <option value="$PROJECT_DIR$/httpdocs/assets/foundation/form.js" />
         <option value="$PROJECT_DIR$/httpdocs/assets/foundation/depend.js" />
         <option value="$PROJECT_DIR$/system/events.go" />
-        <option value="$PROJECT_DIR$/lib/router/router.go" />
         <option value="$PROJECT_DIR$/log/log.go" />
         <option value="$PROJECT_DIR$/log/logger/logger.go" />
         <option value="$PROJECT_DIR$/system/run.go" />
@@ -242,6 +238,7 @@
         <option value="$PROJECT_DIR$/system/database.go" />
         <option value="$PROJECT_DIR$/system/bootstrap.go" />
         <option value="$PROJECT_DIR$/config.yml" />
+        <option value="$PROJECT_DIR$/lib/router/router.go" />
         <option value="$PROJECT_DIR$/lib/router/request.go" />
       </list>
     </option>
@@ -467,7 +464,8 @@
     <MESSAGE value="Mile 3" />
     <MESSAGE value="Dont force db" />
     <MESSAGE value="Fix db for mysql" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix db for mysql" />
+    <MESSAGE value="Added extra data carrier" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added extra data carrier" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -688,13 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/router/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5712">
-          <caret line="341" column="23" selection-start-line="341" selection-start-column="23" selection-end-line="341" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/system/template.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
@@ -817,15 +808,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/system/router.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        <state relative-caret-position="68">
+          <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/router/router.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2046">
+          <caret line="19" column="10" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/router/request.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+        <state relative-caret-position="257">
+          <caret line="98" column="17" selection-start-line="98" selection-start-column="17" selection-end-line="98" selection-end-column="17" />
         </state>
       </provider>
     </entry>

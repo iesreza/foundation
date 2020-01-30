@@ -71,7 +71,7 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		}
 	}
 
-	if !req.Matched && handle.Fallback != nil {
+	if !req.Matched && handle.Fallback != nil && !req.terminated {
 		handle.Fallback(req)
 	}
 

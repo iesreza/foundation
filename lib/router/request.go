@@ -88,6 +88,7 @@ func (r *Request) Write(bytes []byte) {
 		return
 	}
 	r.writer.Write(bytes)
+	r.Terminate()
 }
 
 func (r *Request) WriteString(s string) {
@@ -95,6 +96,7 @@ func (r *Request) WriteString(s string) {
 		return
 	}
 	r.writer.Write([]byte(s))
+	r.Terminate()
 }
 
 func (r *Request) WriteObject(obj interface{}) error {
@@ -105,6 +107,7 @@ func (r *Request) WriteObject(obj interface{}) error {
 	if err == nil {
 		r.writer.Header().Set("Content-Type", "application/json")
 		r.writer.Write(data)
+		r.Terminate()
 		return nil
 	} else {
 		return err
