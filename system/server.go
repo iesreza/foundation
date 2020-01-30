@@ -18,7 +18,7 @@ func StartWebServer() {
 			}
 		}()
 		go func() {
-			Router.Middleware(func(req router.Request) bool {
+			Router.Middleware(func(req *router.Request) bool {
 				req.Req().URL.Scheme = "https"
 				return true
 			})
@@ -27,7 +27,7 @@ func StartWebServer() {
 		}()
 	} else {
 		go func() {
-			Router.Middleware(func(req router.Request) bool {
+			Router.Middleware(func(req *router.Request) bool {
 				req.Req().URL.Scheme = "http"
 				return true
 			})
@@ -36,7 +36,7 @@ func StartWebServer() {
 		}()
 	}
 
-	Router.Middleware(func(req router.Request) bool {
+	Router.Middleware(func(req *router.Request) bool {
 		if Shutdown {
 
 			http.Error(*req.Writer(), "Server Not Listening", http.StatusNoContent)

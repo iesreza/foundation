@@ -13,7 +13,7 @@ var defaultRouter = handler{
 
 type handler struct {
 	routes     []*Route
-	middleware []func(req Request) bool
+	middleware []func(req *Request) bool
 	Fallback   func(req Request)
 }
 
@@ -55,7 +55,7 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 	session(&req)
 	access := true
 	for _, item := range handle.middleware {
-		if !item(req) {
+		if !item(&req) {
 			access = false
 		}
 	}
@@ -82,9 +82,6 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 
 	for _, item := range handle.middleware {
 		if !item(*req) {
-			if handle.onElse != nil && !req.terminated {
-				handle.onElse(*req)
-			}
 			return false
 		}
 	}
@@ -333,7 +330,7 @@ func (route *Route) Else(onMatch func(req Request)) *Route {
 	return route
 }
 
-func (route *handler) Middleware(middlewares ...func(req Request) bool) *handler {
+func (route *handler) Middleware(middlewares ...func(req *Request) bool) *handler {
 	for _, item := range middlewares {
 		route.middleware = append(route.middleware, item)
 	}
