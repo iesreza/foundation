@@ -15,14 +15,17 @@ var Database *xorm.Engine
 
 func SetupDatabase() {
 	config := GetConfig().Database
+	log.Debug(config)
 	var err error
 	if config.Enabled == false {
 		return
 	}
+
 	switch strings.ToLower(config.Type) {
 	case "mysql":
-		connectionString := fmt.Sprintf("%s:%s@%s/%s", config.Username, config.Password, config.Server, config.Database)
+		connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", config.Username, config.Password, config.Server, config.Database)
 		Database, err = xorm.NewEngine("mysql", connectionString)
+
 	case "postgres":
 		connectionString := fmt.Sprintf("user=%s password=%s host=%s dbname=%s sslmode=%s", config.Username, config.Password, config.Server, config.Database, config.SSLMode)
 		Database, err = xorm.NewEngine("postgres", connectionString)
