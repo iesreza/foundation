@@ -14,6 +14,7 @@ type Request struct {
 	Parameters map[string]value
 	Get        map[string]value
 	Post       map[string]value
+	Data       map[string]interface{}
 	Session    Session
 	Cookie     map[string]http.Cookie
 	Matched    bool

@@ -24,6 +24,7 @@ server:
   key:   key.pem
 # Database credentials
 database:
+  enabled: true
   type: "sqlite"
   server: ""
   database: "database.sqlite3"
