@@ -21,4 +21,6 @@ How to use:
 - [ ] Implement expose API (like GraphQL)
 - [ ] Empty Project Builder
 - [ ] Docker image maker
-- [ ] Document everything
+- [ ] Write docs
+- [ ] Port adminlte
+- [ ] Integrate general js library
