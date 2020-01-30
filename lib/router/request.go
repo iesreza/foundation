@@ -14,6 +14,7 @@ type Request struct {
 	Parameters map[string]value
 	Get        map[string]value
 	Post       map[string]value
+	Data       map[string]interface{}
 	Session    Session
 	Cookie     map[string]http.Cookie
 	Matched    bool
@@ -29,6 +30,7 @@ func NewRequest(writer http.ResponseWriter, request *http.Request) Request {
 	req := Request{
 		writer:  writer,
 		request: request,
+		Data:    map[string]interface{}{},
 	}
 
 	return req
@@ -86,6 +88,7 @@ func (r *Request) Write(bytes []byte) {
 		return
 	}
 	r.writer.Write(bytes)
+	r.Terminate()
 }
 
 func (r *Request) WriteString(s string) {
@@ -93,6 +96,7 @@ func (r *Request) WriteString(s string) {
 		return
 	}
 	r.writer.Write([]byte(s))
+	r.Terminate()
 }
 
 func (r *Request) WriteObject(obj interface{}) error {
@@ -103,6 +107,7 @@ func (r *Request) WriteObject(obj interface{}) error {
 	if err == nil {
 		r.writer.Header().Set("Content-Type", "application/json")
 		r.writer.Write(data)
+		r.Terminate()
 		return nil
 	} else {
 		return err

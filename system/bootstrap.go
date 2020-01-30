@@ -15,8 +15,6 @@ import (
 )
 
 func Boot() {
-
-	SetupDatabase()
 	SetupRouter()
 	router.SessionAge = time.Duration(config.App.SessionAge) * time.Second
 	StartWebServer()
