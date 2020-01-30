@@ -6,8 +6,8 @@
 
 How to use:
 
-####[Sample App](https://github.com/iesreza/foundation-example)
-####[Components](https://github.com/iesreza/foundation/docs/components.md)
-####[Routers](https://github.com/iesreza/foundation/docs/router.md)
+#### [Sample App](https://github.com/iesreza/foundation-example)
+#### [Components](https://github.com/iesreza/foundation/docs/components.md)
+#### [Routers](https://github.com/iesreza/foundation/docs/router.md)
 
 
