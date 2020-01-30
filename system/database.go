@@ -89,5 +89,8 @@ func SetupDatabase() {
 }
 
 func GetDBO() *xorm.Engine {
+	if Database == nil {
+		SetupDatabase()
+	}
 	return Database
 }
