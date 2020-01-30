@@ -49,6 +49,7 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		Parameters: map[string]value{},
 		Get:        map[string]value{},
 		Post:       map[string]value{},
+		Data:       map[string]interface{}{},
 		Matched:    false,
 	}
 	session(&req)

@@ -30,6 +30,7 @@ func NewRequest(writer http.ResponseWriter, request *http.Request) Request {
 	req := Request{
 		writer:  writer,
 		request: request,
+		Data:    map[string]interface{}{},
 	}
 
 	return req
