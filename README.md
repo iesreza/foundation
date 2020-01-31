@@ -25,3 +25,7 @@ How to use:
 - [ ] Port adminlte
 - [ ] Integrate general js library
 - [ ] Integrate github actions
+
+# Branches
+- master
+- dev (for development)
