@@ -34,6 +34,7 @@ database:
   cacheSize: 1000
   debug: true
   sslmode: "disable"
+  params: ""
 
 #Log to file
 log:

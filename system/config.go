@@ -59,6 +59,7 @@ type Config struct {
 		Debug     string `yaml:"debug"`
 		Database  string `yaml:"database"`
 		SSLMode   string `yaml:"sslmode"`
+		Params    string `yaml:"params"`
 	} `yaml:"database"`
 }
 
