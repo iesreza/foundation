@@ -26,6 +26,6 @@ How to use:
 - [ ] Integrate general js library
 - [ ] Integrate github actions
 
-# Branches
+# Branches git
 - master
 - dev (for development)
