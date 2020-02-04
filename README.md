@@ -18,9 +18,15 @@ How to use:
 - [ ] Render Engine: automatically set render engine to server side or client side
 - [ ] Optimize accessing form data
 - [ ] Sanitize form data
-- [ ] Implement expose API (like GraphQL)
+- [ ] Implement expose API (like GraphQL, REST)
 - [ ] Empty Project Builder
 - [ ] Docker image maker
 - [ ] Write docs
 - [ ] Port adminlte
 - [ ] Integrate general js library
+- [ ] Integrate github actions
+- [ ] Bind form data to models
+
+# Branches git
+- master
+- dev (for development)
