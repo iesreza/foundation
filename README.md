@@ -25,6 +25,7 @@ How to use:
 - [ ] Port adminlte
 - [ ] Integrate general js library
 - [ ] Integrate github actions
+- [ ] Bind form data to models
 
 # Branches git
 - master
