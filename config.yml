@@ -6,15 +6,15 @@ alarm:
 
 # App configurations
 app:
-  logomini: <b>F</b>oundation
-  logolarge: Foundation
+  logo-mini: <b>F</b>oundation
+  logo-large: Foundation
   title: Foundation
   language: en-GB
   path: ./httpdocs
   assets: ./httpdocs/assets
   static: ./httpdocs/static
-  sessionage: 60
-
+  session-age: 60
+  max-upload-size: 5mb
 # Server configurations
 server:
   host: "0.0.0.0"
@@ -31,9 +31,9 @@ database:
   user: "admin"
   pass: "super-pedro-1980"
   cache: true
-  cacheSize: 1000
+  cache-size: 1000
   debug: true
-  sslmode: "disable"
+  ssl-mode: "disable"
   params: ""
 
 #Log to file
@@ -47,5 +47,5 @@ log:
 #Tweaks
 tweaks:
   ballast: true
-  ballastsize: 100mb
+  ballast-size: 100mb
   processors: 0
