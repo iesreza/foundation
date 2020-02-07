@@ -182,7 +182,7 @@ func FormatInt64(i int64) string {
 	return p.Sprintf("%d\n", i)
 }
 
-func ParseSize(expr string) (uint64, error) {
+func ParseSize(expr string) (int64, error) {
 	expr = strings.ToLower(expr)
 	num := ""
 	unit := ""
@@ -204,22 +204,22 @@ func ParseSize(expr string) (uint64, error) {
 		// do nothing - already in bytes
 
 	case "k", "kb", "kilo", "kilobyte", "kilobytes":
-		return uint64(uint64(i) * KB), nil
+		return int64(uint64(i) * KB), nil
 
 	case "m", "mb", "mega", "megabyte", "megabytes":
-		return uint64(uint64(i) * MB), nil
+		return int64(uint64(i) * MB), nil
 
 	case "g", "gb", "giga", "gigabyte", "gigabytes":
-		return uint64(uint64(i) * GB), nil
+		return int64(uint64(i) * GB), nil
 
 	case "t", "tb", "tera", "terabyte", "terabytes":
-		return uint64(uint64(i) * TB), nil
+		return int64(uint64(i) * TB), nil
 
 	case "p", "pb", "peta", "petabyte", "petabytes":
-		return uint64(uint64(i) * PB), nil
+		return int64(uint64(i) * PB), nil
 
 	case "E", "EB", "e", "eb", "eB":
-		return uint64(uint64(i) * EB), nil
+		return int64(uint64(i) * EB), nil
 
 	default:
 		return 0, fmt.Errorf("unable to parse size: %s", expr)

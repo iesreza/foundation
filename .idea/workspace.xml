@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c6b3034-205e-4392-a7c8-4561edf87f07" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/form/serialization.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/dashboard/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/components/dashboard/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/String.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/String.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/form/serialization.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/router/request.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/router/request.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/router/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/system/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/system/config.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,30 +38,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/json.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
-              <folding>
-                <element signature="e#13#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/form/serialization.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
-              <folding>
-                <element signature="e#14#179#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../mitchellh/mapstructure/mapstructure.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="148">
@@ -90,8 +67,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/system/config.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+            <state relative-caret-position="255">
+              <caret line="88" column="44" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
               <folding>
                 <element signature="e#16#104#0" expanded="true" />
               </folding>
@@ -102,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/dashboard/router.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="17" lean-forward="true" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+            <state relative-caret-position="174">
+              <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
               <folding>
                 <element signature="e#19#114#0" expanded="true" />
               </folding>
@@ -112,10 +89,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.yml">
+        <entry file="file://$PROJECT_DIR$/lib/router/router.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+            <state relative-caret-position="226">
+              <caret line="373" column="20" lean-forward="true" selection-start-line="373" selection-start-column="20" selection-end-line="373" selection-end-column="20" />
+              <folding>
+                <element signature="e#16#65#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/router/request.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="227" column="33" selection-start-line="227" selection-start-column="33" selection-end-line="227" selection-end-column="33" />
+              <folding>
+                <element signature="e#16#85#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/Go/src/mime/multipart/formdata.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="159" column="5" selection-start-line="159" selection-start-column="5" selection-end-line="159" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -123,17 +124,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/String.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/system/router.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+            <state relative-caret-position="-841">
+              <caret line="184" column="29" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -152,9 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>//</find>
-      <find>//js</find>
-      <find>println</find>
       <find>print</find>
       <find>fmt.</find>
       <find>this is test message</find>
@@ -182,6 +171,9 @@
       <find>Te</find>
       <find>write</find>
       <find>Fallback</find>
+      <find>request</find>
+      <find>Post</find>
+      <find>Request{</find>
     </findStrings>
     <replaceStrings>
       <replace>adminlte/assets/img/</replace>
@@ -239,16 +231,16 @@
         <option value="$PROJECT_DIR$/documents/router.md" />
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/system/bootstrap.go" />
-        <option value="$PROJECT_DIR$/lib/router/request.go" />
-        <option value="$PROJECT_DIR$/lib/router/router.go" />
         <option value="$PROJECT_DIR$/system/database.go" />
         <option value="$PROJECT_DIR$/lib/json.go" />
         <option value="$PROJECT_DIR$/lib/form/form.go" />
         <option value="$PROJECT_DIR$/config.yml" />
+        <option value="$PROJECT_DIR$/lib/form/serialization.go" />
         <option value="$PROJECT_DIR$/system/config.go" />
         <option value="$PROJECT_DIR$/lib/String.go" />
         <option value="$PROJECT_DIR$/components/dashboard/router.go" />
-        <option value="$PROJECT_DIR$/lib/form/serialization.go" />
+        <option value="$PROJECT_DIR$/lib/router/router.go" />
+        <option value="$PROJECT_DIR$/lib/router/request.go" />
       </list>
     </option>
   </component>
@@ -292,7 +284,7 @@
               <item name="foundation" type="b2602c69:ProjectViewProjectNode" />
               <item name="foundation" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="form" type="462c0819:PsiDirectoryNode" />
+              <item name="router" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="foundation" type="b2602c69:ProjectViewProjectNode" />
@@ -500,7 +492,8 @@
     <MESSAGE value="Fix: changed middleware input request to request pointer" />
     <MESSAGE value="Fix: xorm to gorm" />
     <MESSAGE value="JSON lib" />
-    <option name="LAST_COMMIT_MESSAGE" value="JSON lib" />
+    <MESSAGE value="form post unmarshaler" />
+    <option name="LAST_COMMIT_MESSAGE" value="form post unmarshaler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -519,9 +512,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/router/session.go">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://C:/Go/src/net/http/server.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -782,23 +772,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/router/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="92" column="13" selection-start-line="92" selection-start-column="13" selection-end-line="92" selection-end-column="13" />
-          <folding>
-            <element signature="e#16#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/router/request.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1564">
-          <caret line="98" column="17" selection-start-line="98" selection-start-column="17" selection-end-line="98" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/components/dashboard/component.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -823,16 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/system/config.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
-          <folding>
-            <element signature="e#16#104#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -844,13 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/String.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
@@ -868,6 +824,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/system/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="88" column="44" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
+          <folding>
+            <element signature="e#16#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/String.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-841">
+          <caret line="184" column="29" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/mime/multipart/formdata.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="159" column="5" selection-start-line="159" selection-start-column="5" selection-end-line="159" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/form/serialization.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#14#179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../mitchellh/mapstructure/mapstructure.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="148">
@@ -877,20 +867,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/dashboard/router.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="17" lean-forward="true" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+        <state relative-caret-position="174">
+          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
           <folding>
             <element signature="e#19#114#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/form/serialization.go">
+    <entry file="file://$PROJECT_DIR$/lib/router/router.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+        <state relative-caret-position="226">
+          <caret line="373" column="20" lean-forward="true" selection-start-line="373" selection-start-column="20" selection-end-line="373" selection-end-column="20" />
           <folding>
-            <element signature="e#14#179#0" expanded="true" />
+            <element signature="e#16#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/router/request.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="227" column="33" selection-start-line="227" selection-start-column="33" selection-end-line="227" selection-end-column="33" />
+          <folding>
+            <element signature="e#16#85#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,7 +1,9 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/log"
+	"github.com/iesreza/foundation/lib/router"
 	"gopkg.in/yaml.v2"
 	"os"
 	"runtime"
@@ -84,6 +86,7 @@ func GetConfig() Config {
 		configInstance.App.OS = runtime.GOOS
 		configInstance.App.ProcessID = os.Getpid()
 
+		router.MaxUploadSize, _ = lib.ParseSize(configInstance.App.MaxUploadSize)
 	}
 	return *configInstance
 }

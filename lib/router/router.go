@@ -48,10 +48,13 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		request:    request,
 		Parameters: map[string]value{},
 		Get:        map[string]value{},
-		Post:       map[string]value{},
+		Form:       map[string][]string{},
 		Data:       map[string]interface{}{},
+		Files:      map[string][]FileUpload{},
 		Matched:    false,
 	}
+
+	req.parseForm()
 	session(&req)
 	access := true
 	for _, item := range handle.middleware {

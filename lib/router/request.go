@@ -2,7 +2,11 @@ package router
 
 import (
 	"encoding/json"
+	"github.com/gorilla/schema"
+	"io"
+	"mime/multipart"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -13,8 +17,9 @@ type Request struct {
 	request    *http.Request
 	Parameters map[string]value
 	Get        map[string]value
-	Post       map[string]value
+	Form       map[string][]string
 	Data       map[string]interface{}
+	Files      map[string][]FileUpload
 	Session    Session
 	Cookie     map[string]http.Cookie
 	Matched    bool
@@ -26,13 +31,23 @@ type message struct {
 	Type    string
 }
 
+type FileUpload struct {
+	Name        string
+	ContentType string
+	Size        int64
+	Extension   string
+	Pointer     *multipart.FileHeader
+}
+
+var MaxUploadSize int64 = 32 << 20
+
 func NewRequest(writer http.ResponseWriter, request *http.Request) Request {
 	req := Request{
 		writer:  writer,
 		request: request,
 		Data:    map[string]interface{}{},
 	}
-
+	req.parseForm()
 	return req
 }
 
@@ -188,4 +203,69 @@ func (req *Request) Fail(message string) {
 
 func (req *Request) Terminate() {
 	req.terminated = true
+}
+
+func (req *Request) Unmarshal(output interface{}) error {
+	//guess data type
+
+	if req.Req().Header.Get("Content-Type") == "application/json" {
+		return json.NewDecoder(req.Req().Body).Decode(output)
+	}
+	if req.Req().Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+		req.Req().ParseForm()
+		return schema.NewDecoder().Decode(output, req.Req().Form)
+	}
+	if strings.HasPrefix(req.Req().Header.Get("Content-Type"), "multipart/form-data") {
+		return schema.NewDecoder().Decode(output, req.Req().MultipartForm.Value)
+
+	}
+	return schema.NewDecoder().Decode(output, req.Req().Header)
+}
+
+func (req *Request) parseForm() {
+	if req.Req().Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+		req.Req().ParseForm()
+		req.Form = req.Req().Form
+	} else if strings.HasPrefix(req.Req().Header.Get("Content-Type"), "multipart/form-data") {
+
+		req.Req().ParseMultipartForm(MaxUploadSize)
+		req.Form = req.Req().MultipartForm.Value
+		if len(req.Req().MultipartForm.File) > 0 {
+			for key, item := range req.Req().MultipartForm.File {
+				files := req.Req().MultipartForm.File[key]
+				req.Files[key] = make([]FileUpload, len(item))
+				for i, file := range files {
+					chunks := strings.Split(file.Filename, ".")
+					req.Files[key][i] = FileUpload{
+						Name:        file.Filename,
+						Extension:   chunks[len(chunks)-1],
+						ContentType: file.Header.Get("Content-Type"),
+						Size:        file.Size,
+						Pointer:     file,
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+}
+
+func (file FileUpload) Move(dst string) error {
+	src, err := file.Pointer.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+	// This is path which we want to store the file
+	f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	io.Copy(f, src)
+
+	return nil
 }

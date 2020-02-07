@@ -1,7 +1,7 @@
 package dashboard
 
 import (
-	"github.com/iesreza/foundation/lib/form"
+	"fmt"
 	"github.com/iesreza/foundation/lib/router"
 	"github.com/iesreza/foundation/system"
 )
@@ -15,7 +15,11 @@ func (component component) Routers() {
 			Y int
 			Z bool
 		}{}
-		form.Unmarshal(req, &data)
+		req.Unmarshal(&data)
+		fmt.Println(data)
+		if _, ok := req.Files["myfile"]; ok {
+			fmt.Println(req.Files["myfile"][0].Move("d:/" + req.Files["myfile"][0].Name))
+		}
 
 	})
 
