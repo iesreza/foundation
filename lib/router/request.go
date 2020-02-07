@@ -6,6 +6,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -16,8 +17,8 @@ type Request struct {
 	writer     http.ResponseWriter
 	request    *http.Request
 	Parameters map[string]value
-	Get        map[string]value
-	Form       map[string][]string
+	Query      url.Values
+	Form       url.Values
 	Data       map[string]interface{}
 	Files      map[string][]FileUpload
 	Session    Session
@@ -223,6 +224,7 @@ func (req *Request) Unmarshal(output interface{}) error {
 }
 
 func (req *Request) parseForm() {
+	req.Query = req.Req().URL.Query()
 	if req.Req().Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
 		req.Req().ParseForm()
 		req.Form = req.Req().Form

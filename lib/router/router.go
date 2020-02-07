@@ -47,7 +47,6 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		writer:     writer,
 		request:    request,
 		Parameters: map[string]value{},
-		Get:        map[string]value{},
 		Form:       map[string][]string{},
 		Data:       map[string]interface{}{},
 		Files:      map[string][]FileUpload{},
