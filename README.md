@@ -16,7 +16,7 @@ How to use:
 - [ ] Optimize Request object
 - [ ] Make dynamic interface for user management integration
 - [ ] Render Engine: automatically set render engine to server side or client side
-- [ ] Optimize accessing form data
+- [x] Optimize accessing form data
 - [ ] Sanitize form data
 - [ ] Implement expose API (like GraphQL, REST)
 - [ ] Empty Project Builder
@@ -25,7 +25,7 @@ How to use:
 - [ ] Port adminlte
 - [ ] Integrate general js library
 - [ ] Integrate github actions
-- [ ] Bind form data to models
+- [x] Bind form data to models
 
 # Branches git
 - master
