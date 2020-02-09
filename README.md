@@ -20,7 +20,7 @@ How to use:
 - [ ] Sanitize form data
 - [ ] Implement expose API (like GraphQL, REST)
 - [ ] Empty Project Builder
-- [ ] Docker image maker
+- [x] Docker image maker
 - [ ] Write docs
 - [ ] Port adminlte
 - [ ] Integrate general js library
