@@ -1,7 +1,6 @@
 package docker
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/system"
@@ -12,8 +11,8 @@ import (
 
 type Controller struct{}
 
-var gitRegex = regexp.MustCompile(`(?m)url\s*=\s*(https*\:\/\/.+\.git)`)
-var gitPathRegex = regexp.MustCompile(`(?m)https*:\/\/(.+).git`)
+var gitRegex = regexp.MustCompile(`(?m)url\s*=\s*(https{0,1}\:\/\/.+)(\.git){0,1}`)
+var gitPathRegex = regexp.MustCompile(`(?m)https*:\/\/(.+)`)
 var gitRepo = ""
 var gitPath = ""
 var gitName = ""
@@ -39,12 +38,13 @@ func RegisterCLI() {
 		}
 		content, _ := git.Content()
 		chunks := gitRegex.FindStringSubmatch(content)
-		if len(chunks) != 2 {
+
+		if len(chunks) < 2 {
 			log.Error("proper .git/config not found. To use docker first you have to put project on git.")
 			return
 		}
 		gitRepo = chunks[1]
-		gitPath = gitPathRegex.FindStringSubmatch(gitRepo)[1]
+		gitPath = strings.TrimRight(gitPathRegex.FindStringSubmatch(gitRepo)[1], ".git")
 		chunks = strings.Split(gitPath, "/")
 		gitName = chunks[len(chunks)-1]
 		if len(chunks) > 1 {
@@ -80,9 +80,7 @@ func RegisterCLI() {
 }
 
 func buildDockerFile() {
-	system.Exec("docker build -t "+gitOwner+"/"+gitName+" "+system.DIR, &system.ExecParams{ReturnResult: false, OnStdScan: func(s string) {
-		fmt.Print(s)
-	}, SplitFunc: bufio.ScanRunes})
+	system.Exec("docker build -t "+gitOwner+"/"+gitName+" "+system.DIR, &system.ExecParams{ReturnResult: false, PrintOutput: true})
 	fmt.Println(" ")
 }
 
@@ -102,7 +100,7 @@ func createDockerFile() {
 	dockerfile.Create("#Autogenreated Dockerfile\n")
 	dockerfile.Append("FROM iron/go:dev\n")
 	dockerfile.Append("WORKDIR /app\n")
-	dockerfile.Append("ENV SRC_DIR=" + gitPath + "/\n")
+	dockerfile.Append("ENV SRC_DIR=$GOPATH/src/" + gitPath + "/\n")
 	dockerfile.Append("RUN go get " + gitPath + "\n")
 	dockerfile.Append("ADD ./config.yml /app/\n")
 	dockerfile.Append("RUN cd $SRC_DIR; go build -o /app/" + gitName + ";\n")

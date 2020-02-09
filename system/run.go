@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"github.com/iesreza/foundation/lib/log"
 	"io"
+	"os"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -27,10 +28,11 @@ type ExecParams struct {
 	ReturnResult bool
 	OnStdScan    func(s string)
 	SplitFunc    bufio.SplitFunc
+	PrintOutput  bool
 }
 
 var defaultExecParams = ExecParams{
-	true, nil, bufio.ScanRunes,
+	true, nil, bufio.ScanRunes, false,
 }
 
 func Exec(command string, params *ExecParams) (string, error) {
@@ -45,23 +47,37 @@ func Exec(command string, params *ExecParams) (string, error) {
 		cmd = exec.Command("bash", "-c", command)
 	}
 
-	stderr, _ := cmd.StderrPipe()
-	stdout, _ := cmd.StdoutPipe()
-	err := cmd.Start()
-	if err != nil {
-		return output, err
-	}
-	scanner := bufio.NewScanner(io.MultiReader(stderr, stdout))
-	scanner.Split(params.SplitFunc)
+	if params.PrintOutput {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 
-	for scanner.Scan() {
-		if params.ReturnResult {
-			output += scanner.Text()
+		err := cmd.Start()
+		if err != nil {
+			return output, err
 		}
-		if params.OnStdScan != nil {
-			params.OnStdScan(scanner.Text())
+
+	} else {
+		stderr, _ := cmd.StderrPipe()
+		stdout, _ := cmd.StdoutPipe()
+
+		err := cmd.Start()
+		if err != nil {
+			return output, err
+		}
+
+		scanner := bufio.NewScanner(io.MultiReader(stderr, stdout))
+		scanner.Split(params.SplitFunc)
+
+		for scanner.Scan() {
+			if params.ReturnResult {
+				output += scanner.Text()
+			}
+			if params.OnStdScan != nil {
+				params.OnStdScan(scanner.Text())
+			}
 		}
 	}
+
 	cmd.Wait()
 	return output, nil
 }

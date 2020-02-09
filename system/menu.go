@@ -1,6 +1,7 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/router"
 	"html/template"
 	"strconv"
@@ -89,7 +90,7 @@ func recursiveMenuRender(request *router.Request, m *Menu, depth int) (string, b
 		html += "<a href=\"" + m.URL + "\">"
 	}
 	if m.Icon != "" {
-		html += Icon(m.Icon)
+		html += lib.Icon(m.Icon)
 	}
 	html += m.Title
 	html += "</a>"
