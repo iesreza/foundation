@@ -2,7 +2,6 @@ package docker
 
 import (
 	"fmt"
-	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/system"
 	"github.com/iesreza/gutil/path"
 	"regexp"
@@ -19,28 +18,30 @@ var gitName = ""
 var gitOwner = ""
 
 func RegisterCLI() {
+	type dockerCLI struct {
+		Action string `short:"a" long:"action" description:"docker action" choice:"init" choice:"remove" choice:"build"`
+	}
 
-	system.RegisterCLI("docker", &struct{}{}, func(command string, data interface{}) {
+	system.RegisterCLI("docker", &dockerCLI{}, func(command string, data interface{}) {
 		version, err := system.Exec("docker -v", nil)
 		if err != nil || !strings.Contains(version, "Docker version") {
-			log.Error("Docker is not installed on this system")
+			fmt.Println("Docker is not installed on this system")
 			return
 		} else {
-			log.Notice("Installed Docker Version:")
-			log.Notice(version)
-			log.Notice("Type exit to exit")
+			fmt.Println("Installed Docker Version:")
+			fmt.Println(version)
 		}
 
 		git := path.File(system.DIR + "/.git/config")
 		if !git.Exist() {
-			log.Error(".git/config not found. To use docker first you have to put project on git.")
+			fmt.Println(".git/config not found. To use docker first you have to put project on git.")
 			return
 		}
 		content, _ := git.Content()
 		chunks := gitRegex.FindStringSubmatch(content)
 
 		if len(chunks) < 2 {
-			log.Error("proper .git/config not found. To use docker first you have to put project on git.")
+			fmt.Println("proper .git/config not found. To use docker first you have to put project on git.")
 			return
 		}
 		gitRepo = chunks[1]
@@ -52,30 +53,20 @@ func RegisterCLI() {
 		} else {
 			gitOwner = "foundation"
 		}
-		for {
-			cmd := system.WaitForConsole(system.GetConfig().App.Title + " Docker>")
-			lower := strings.ToLower(cmd)
-			if strings.TrimSpace(lower) == "exit" {
-				break
-			}
-			if strings.TrimSpace(cmd) != "" {
 
-				switch strings.TrimSpace(cmd) {
-				case "init", "create":
-					createDockerFile()
-					break
-				case "remove":
-					removeDockerFile()
-					break
-				case "build", "deploy":
-					buildDockerFile()
-					break
-				}
-
-			}
-
+		switch data.(*dockerCLI).Action {
+		case "init":
+			createDockerFile()
+			break
+		case "remove":
+			removeDockerFile()
+			break
+		case "build":
+			buildDockerFile()
+			break
 		}
-	}, "Docker command line tool")
+
+	}, "Dockerfile (create,build,remove)")
 
 }
 
@@ -93,7 +84,7 @@ var dockerfile = path.File(system.DIR + "/Dockerfile")
 
 func createDockerFile() {
 	if dockerfile.Exist() {
-		log.Error("Dockerfile exist. try remove docker file using remove command first")
+		fmt.Println("Dockerfile exist. try remove docker file using remove command first")
 		return
 	}
 
