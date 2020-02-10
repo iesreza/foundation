@@ -2,16 +2,16 @@ package system
 
 import (
 	"fmt"
-	_ "github.com/denisenkom/go-mssqldb"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/iesreza/foundation/lib/log"
-	_ "github.com/lib/pq"
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mssql"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"strings"
-	"xorm.io/xorm"
 )
 
-var Database *xorm.Engine
+var Database *gorm.DB
 
 func SetupDatabase() {
 	config := GetConfig().Database
@@ -23,18 +23,18 @@ func SetupDatabase() {
 
 	switch strings.ToLower(config.Type) {
 	case "mysql":
-		connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", config.Username, config.Password, config.Server, config.Database)
-		Database, err = xorm.NewEngine("mysql", connectionString)
-
+		connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?"+config.Params, config.Username, config.Password, config.Server, config.Database)
+		Database, err = gorm.Open("mysql", connectionString)
 	case "postgres":
-		connectionString := fmt.Sprintf("user=%s password=%s host=%s dbname=%s sslmode=%s", config.Username, config.Password, config.Server, config.Database, config.SSLMode)
-		Database, err = xorm.NewEngine("postgres", connectionString)
+		connectionString := fmt.Sprintf("user=%s password=%s host=%s dbname=%s sslmode=%s "+config.Params, config.Username, config.Password, config.Server, config.Database, config.SSLMode)
+		Database, err = gorm.Open("postgres", connectionString)
 	case "mssql":
-		connectionString := fmt.Sprintf("user id=%s;password=%s;server=%s;database:%s;", config.Username, config.Password, config.Server, config.Database)
-		Database, err = xorm.NewEngine("mssql", connectionString)
+		connectionString := fmt.Sprintf("user id=%s;password=%s;server=%s;database:%s;"+config.Params, config.Username, config.Password, config.Server, config.Database)
+		Database, err = gorm.Open("mssql", connectionString)
 	default:
-		Database, err = xorm.NewEngine("sqlite3", config.Database)
+		Database, err = gorm.Open("sqlite3", config.Database+config.Params)
 	}
+	Database.LogMode(true)
 	if err != nil {
 		log.Critical(err)
 	}
@@ -50,48 +50,56 @@ func SetupDatabase() {
 			if strings.TrimSpace(cmd) != "" {
 
 				if strings.HasPrefix(lower, "select") {
-					res, err := Database.Query(cmd)
-					if err != nil {
-						log.Warning(err)
-					} else {
-						if len(res) > 0 {
-							mk := make([]string, len(res[0]))
-							c := 0
-							for key, _ := range res[0] {
-								mk[c] = key
-								c++
-							}
+					var res []map[string]interface{}
+					obj := Database.Raw(cmd)
+					obj.Scan(&res)
+					err := obj.GetErrors()
+					if len(err) > 0 {
+						for _, item := range err {
+							log.Error(item.Error())
+						}
+					}
+					if len(res) > 0 {
+						mk := make([]string, len(res[0]))
+						c := 0
+						for key, _ := range res[0] {
+							mk[c] = key
+							c++
+						}
 
-							for i, row := range res {
-								fmt.Printf("\r\n%d- ", i+1)
-								for _, key := range mk {
-									fmt.Printf("%s:%s\t", key, string(row[key]))
-								}
+						for i, row := range res {
+							fmt.Printf("\r\n%d- ", i+1)
+							for _, key := range mk {
+								fmt.Printf("%s:%v\t", key, row[key])
 							}
 						}
-						fmt.Printf("\r\nTotal %d records\r\n", len(res))
 					}
+					fmt.Printf("\r\nTotal %d records\r\n", len(res))
+
 				} else {
-					res, err := Database.Exec(cmd)
-					if err != nil {
-						log.Warning(err)
+					obj := Database.Exec(cmd)
+					err := obj.GetErrors()
+					if len(err) > 0 {
+						for _, item := range err {
+							log.Error(item.Error())
+						}
 					} else {
 						if strings.HasPrefix(cmd, "insert into") {
-							insertid, _ := res.LastInsertId()
-							fmt.Printf("last inserted id: %d", insertid)
+							fmt.Printf("successfuly inserted")
 						} else {
-							affected, _ := res.RowsAffected()
-							fmt.Printf("%d rows affected", affected)
+
+							fmt.Printf("%d rows affected", obj.RowsAffected)
 						}
 					}
 				}
+
 			}
 
 		}
 	}, "Run SQL command on database and return result")
 }
 
-func GetDBO() *xorm.Engine {
+func GetDBO() *gorm.DB {
 	if Database == nil {
 		SetupDatabase()
 	}

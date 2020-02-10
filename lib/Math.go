@@ -1,19 +1,30 @@
 package lib
 
 import (
-	"github.com/ethereum/go-ethereum/common/math"
 	"math/rand"
 	"strconv"
 )
 
 const (
-	B  uint64 = 1
-	KB        = B << 10
-	MB        = KB << 10
-	GB        = MB << 10
-	TB        = GB << 10
-	PB        = TB << 10
-	EB        = PB << 10
+	B           uint64 = 1
+	KB                 = B << 10
+	MB                 = KB << 10
+	GB                 = MB << 10
+	TB                 = GB << 10
+	PB                 = TB << 10
+	EB                 = PB << 10
+	_MaxInt8_          = 1<<7 - 1
+	_MinInt8_          = -1 << 7
+	_MaxInt16_         = 1<<15 - 1
+	_MinInt16_         = -1 << 15
+	_MaxInt32_         = 1<<31 - 1
+	_MinInt32_         = -1 << 31
+	_MaxInt64_         = 1<<63 - 1
+	_MinInt64_         = -1 << 63
+	_MaxUint8_         = 1<<8 - 1
+	_MaxUint16_        = 1<<16 - 1
+	_MaxUint32_        = 1<<32 - 1
+	_MaxUint64_        = 1<<64 - 1
 )
 
 //RandomBetween Create random number between two ranges
@@ -37,7 +48,7 @@ func ParseSafeFloat(s string) float64 {
 }
 
 func MaxInt(args ...int) int {
-	x := math.MinInt32
+	x := _MinInt32_
 	for _, arg := range args {
 		if arg > x {
 			x = arg
@@ -58,7 +69,7 @@ func MaxUInt(args ...uint32) uint32 {
 
 func MaxInt64(args ...int64) int64 {
 	var x int64
-	x = math.MinInt64
+	x = _MinInt64_
 	for _, arg := range args {
 		if arg > x {
 			x = arg
@@ -68,7 +79,7 @@ func MaxInt64(args ...int64) int64 {
 }
 
 func MinInt(args ...int) int {
-	x := math.MaxInt32
+	x := _MaxInt32_
 	for _, arg := range args {
 		if arg < x {
 			x = arg
@@ -79,7 +90,7 @@ func MinInt(args ...int) int {
 
 func MinUInt(args ...uint) uint {
 	var x uint
-	x = math.MaxUint32
+	x = _MaxUint32_
 	for _, arg := range args {
 		if arg < x {
 			x = arg
@@ -90,7 +101,7 @@ func MinUInt(args ...uint) uint {
 
 func MinInt64(args ...int64) int64 {
 	var x int64
-	x = math.MaxInt64
+	x = _MaxInt64_
 	for _, arg := range args {
 		if arg < x {
 			x = arg
@@ -101,7 +112,7 @@ func MinInt64(args ...int64) int64 {
 
 func MinUInt64(args ...uint64) uint64 {
 	var x uint64
-	x = math.MaxUint64
+	x = _MaxUint64_
 	for _, arg := range args {
 		if arg < x {
 			x = arg

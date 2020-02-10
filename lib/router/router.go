@@ -47,11 +47,13 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		writer:     writer,
 		request:    request,
 		Parameters: map[string]value{},
-		Get:        map[string]value{},
-		Post:       map[string]value{},
+		Form:       map[string][]string{},
 		Data:       map[string]interface{}{},
+		Files:      map[string][]FileUpload{},
 		Matched:    false,
 	}
+
+	req.parseForm()
 	session(&req)
 	access := true
 	for _, item := range handle.middleware {
@@ -80,11 +82,11 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 	bypass := false
 
-	for _, item := range handle.middleware {
+	/*	for _, item := range handle.middleware {
 		if !item(*req) {
 			return false
 		}
-	}
+	}*/
 
 	if handle.domainMatch != nil {
 		if !handle.domainMatch.MatchString(req.Req().Host) {

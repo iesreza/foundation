@@ -1,7 +1,9 @@
 package system
 
 import (
+	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/log"
+	"github.com/iesreza/foundation/lib/router"
 	"gopkg.in/yaml.v2"
 	"os"
 	"runtime"
@@ -10,7 +12,7 @@ import (
 var configInstance *Config
 
 type Log struct {
-	WriteFile bool   `yaml:"writefile"`
+	WriteFile bool   `yaml:"write-file"`
 	MaxSize   int    `yaml:"size"` // megabytes
 	MaxAge    int    `yaml:"age"`  //days
 	Level     string `yaml:"level" short:"l" long:"level" description:"log level" choice:"critical" choice:"error" choice:"warning" choice:"info" choice:"notice" choice:"debug" default:"debug"`
@@ -24,22 +26,23 @@ type Config struct {
 	} `yaml:"alarm"`
 	Tweaks struct {
 		Ballast       bool   `yaml:"ballast"`
-		BallastSize   string `yaml:"ballastsize"`
+		BallastSize   string `yaml:"ballast-size"`
 		MaxProcessors int    `yaml:"processors"`
 	} `yaml:"tweaks"`
 	Log Log `yaml:"log"`
 	App struct {
-		WorkingDir string
-		OS         string
-		ProcessID  int
-		LogoMini   string `yaml:"logomini"`
-		LogoLarge  string `yaml:"logolarge"`
-		Title      string `yaml:"title"`
-		Path       string `yaml:"path"`
-		Assets     string `yaml:"assets"`
-		Static     string `yaml:"static"`
-		SessionAge int    `yaml:"sessionage"`
-		Language   string `yaml:"language"`
+		WorkingDir    string
+		OS            string
+		ProcessID     int
+		LogoMini      string `yaml:"logo-mini"`
+		LogoLarge     string `yaml:"logo-large"`
+		Title         string `yaml:"title"`
+		Path          string `yaml:"path"`
+		Assets        string `yaml:"assets"`
+		Static        string `yaml:"static"`
+		SessionAge    int    `yaml:"session-age"`
+		Language      string `yaml:"language"`
+		MaxUploadSize string `yaml:"max-upload-size"`
 	} `yaml:"app"`
 	Server struct {
 		Port  string `yaml:"port"`
@@ -55,10 +58,11 @@ type Config struct {
 		Password  string `yaml:"pass"`
 		Server    string `yaml:"server"`
 		Cache     string `yaml:"cache"`
-		CacheSize string `yaml:"cachesize"`
+		CacheSize string `yaml:"cache-size"`
 		Debug     string `yaml:"debug"`
 		Database  string `yaml:"database"`
-		SSLMode   string `yaml:"sslmode"`
+		SSLMode   string `yaml:"ssl-mode"`
+		Params    string `yaml:"params"`
 	} `yaml:"database"`
 }
 
@@ -82,6 +86,7 @@ func GetConfig() Config {
 		configInstance.App.OS = runtime.GOOS
 		configInstance.App.ProcessID = os.Getpid()
 
+		router.MaxUploadSize, _ = lib.ParseSize(configInstance.App.MaxUploadSize)
 	}
 	return *configInstance
 }

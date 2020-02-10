@@ -3,6 +3,8 @@ package system
 import (
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/iesreza/foundation/components/docker"
+	"github.com/iesreza/foundation/language"
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/lib/router"
@@ -139,4 +141,9 @@ func PreBoot() {
 		fmt.Println("All logs has been cleared ...")
 		log.ClearAll()
 	}, "Clear all logs")
+}
+
+func Essentials() {
+	language.Register()
+	docker.Register()
 }
