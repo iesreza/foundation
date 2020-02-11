@@ -2,10 +2,12 @@ package system
 
 import (
 	"github.com/iesreza/foundation/lib"
+	"github.com/iesreza/foundation/lib/gpath"
 	"github.com/iesreza/foundation/lib/log"
 	"github.com/iesreza/foundation/lib/router"
 	"gopkg.in/yaml.v2"
 	"os"
+	"reflect"
 	"runtime"
 )
 
@@ -89,4 +91,29 @@ func GetConfig() Config {
 		router.MaxUploadSize, _ = lib.ParseSize(configInstance.App.MaxUploadSize)
 	}
 	return *configInstance
+}
+
+func LoadConfig(path string, out interface{}) {
+	if reflect.TypeOf(out).String()[0] != '*' {
+		log.Error("Passed object to system.LoadConfig is not pointer")
+		return
+	}
+	var err error
+	var f *os.File
+	if gpath.IsFileExist(path) {
+		f, err = os.Open(path)
+	} else {
+		f, err = os.Open("./config.yml")
+	}
+	if err != nil {
+		log.Critical(err)
+		return
+	}
+	decoder := yaml.NewDecoder(f)
+	err = decoder.Decode(out)
+	if err != nil {
+		log.Critical(err)
+		return
+	}
+
 }

@@ -50,6 +50,26 @@ func (component *component) Register() {
 	if err != nil {
 		log.Critical(fmt.Errorf("unable to parse template html layouts. %s", err.Error()))
 	}
+
+	type myConfig struct {
+		App struct {
+			WorkingDir    string
+			OS            string
+			ProcessID     int
+			LogoMini      string `yaml:"logo-mini"`
+			LogoLarge     string `yaml:"logo-large"`
+			Title         string `yaml:"title"`
+			Path          string `yaml:"path"`
+			Assets        string `yaml:"assets"`
+			Static        string `yaml:"static"`
+			SessionAge    int    `yaml:"session-age"`
+			Language      string `yaml:"language"`
+			MaxUploadSize string `yaml:"max-upload-size"`
+		} `yaml:"app"`
+	}
+	t := myConfig{}
+	system.LoadConfig("", t)
+
 }
 
 func (component *component) Menu() {

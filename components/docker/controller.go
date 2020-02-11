@@ -2,6 +2,7 @@ package docker
 
 import (
 	"fmt"
+	"github.com/iesreza/foundation/lib/cmd"
 	"github.com/iesreza/foundation/system"
 	"github.com/iesreza/gutil/path"
 	"regexp"
@@ -25,23 +26,23 @@ func RegisterCLI() {
 	system.RegisterCLI("docker", &dockerCLI{}, func(command string, data interface{}) {
 		version, err := system.Exec("docker -v", nil)
 		if err != nil || !strings.Contains(version, "Docker version") {
-			fmt.Println("Docker is not installed on this system")
+			cmd.Error("Docker is not installed on this system")
 			return
 		} else {
-			fmt.Println("Installed Docker Version:")
-			fmt.Println(version)
+			cmd.Info("Installed Docker Version:")
+			cmd.Info(version)
 		}
 
 		git := path.File(system.DIR + "/.git/config")
 		if !git.Exist() {
-			fmt.Println(".git/config not found. To use docker first you have to put project on git.")
+			cmd.Error(".git/config not found. To use docker first you have to put project on git.")
 			return
 		}
 		content, _ := git.Content()
 		chunks := gitRegex.FindStringSubmatch(content)
 
 		if len(chunks) < 2 {
-			fmt.Println("proper .git/config not found. To use docker first you have to put project on git.")
+			cmd.Error("proper .git/config not found. To use docker first you have to put project on git.")
 			return
 		}
 		gitRepo = chunks[1]
@@ -84,7 +85,7 @@ var dockerfile = path.File(system.DIR + "/Dockerfile")
 
 func createDockerFile() {
 	if dockerfile.Exist() {
-		fmt.Println("Dockerfile exist. try remove docker file using remove command first")
+		cmd.Error("Dockerfile exist. try remove docker file using remove command first")
 		return
 	}
 
