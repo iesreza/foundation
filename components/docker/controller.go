@@ -92,6 +92,7 @@ func createDockerFile() {
 	dockerfile.Append("FROM iron/go:dev\n")
 	dockerfile.Append("WORKDIR /app\n")
 	dockerfile.Append("ENV SRC_DIR=$GOPATH/src/" + gitPath + "/\n")
+	dockerfile.Append("export GIT_TERMINAL_PROMPT=1\n")
 	dockerfile.Append("RUN go get " + gitPath + "\n")
 	dockerfile.Append("ADD ./config.yml /app/\n")
 	dockerfile.Append("RUN cd $SRC_DIR; go build -o /app/" + gitName + ";\n")
