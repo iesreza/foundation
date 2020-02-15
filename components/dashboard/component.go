@@ -68,7 +68,7 @@ func (component *component) Register() {
 		} `yaml:"app"`
 	}
 	t := myConfig{}
-	system.LoadConfig("", t)
+	system.LoadConfig("", &t)
 
 }
 

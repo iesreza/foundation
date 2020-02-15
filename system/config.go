@@ -100,7 +100,7 @@ func LoadConfig(path string, out interface{}) {
 	}
 	var err error
 	var f *os.File
-	if gpath.IsFileExist(path) {
+	if path == "" || gpath.IsFileExist(path) {
 		f, err = os.Open(path)
 	} else {
 		f, err = os.Open("./config.yml")
