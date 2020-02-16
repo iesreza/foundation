@@ -117,3 +117,7 @@ func SafeFileContent(path string) []byte {
 	data, _ := ioutil.ReadFile(path)
 	return data
 }
+
+func ReadFile(path string) ([]byte, error) {
+	return ioutil.ReadFile(path)
+}
