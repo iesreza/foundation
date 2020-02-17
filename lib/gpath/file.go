@@ -2,7 +2,6 @@ package gpath
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"time"
 )
@@ -20,7 +19,7 @@ type file struct {
 	tests      string
 }
 
-func Open(path string) (file, error) {
+func Open(path string) (*file, error) {
 	f := file{timeout: DefaultTimeout, path: path}
 	var err error
 	if !IsFileExist(path) {
@@ -30,12 +29,12 @@ func Open(path string) (file, error) {
 		f.fp, err = os.OpenFile(path, f.mode, 0644)
 	}
 	if err != nil {
-		return f, err
+		return &f, err
 	}
 
 	f.SetLastAccess()
 	f.initTimeout()
-	return f, nil
+	return &f, nil
 }
 
 func (f *file) SetLastAccess() {
@@ -47,13 +46,11 @@ func (f *file) access(mode int) error {
 	f.initTimeout()
 	if mode != f.mode {
 		f.mode = mode
-		fmt.Println("switch mode")
 		if !f.closed {
 			f.Close()
 		}
 	}
 	if f.closed {
-		fmt.Println("reopen file")
 		f.fp, err = os.OpenFile(f.path, f.mode, 0644)
 		if err != nil {
 			return err
@@ -162,26 +159,22 @@ func (f *file) setObserver(v bool) {
 
 func (f *file) initTimeout() {
 
-	go func(f *file) {
+	go func() {
 		if f.observer == true {
 			return
 		}
 		f.observer = true
-		fmt.Println("here")
 		for {
 			time.Sleep(f.timeout)
-
 			if f.timeout == 0 || f.closed {
 				break
 			}
 			if time.Now().UnixNano()-f.lastaccess > int64(f.timeout) {
 				f.Close()
-				fmt.Println("timed out")
 				break
 			}
 		}
-
 		f.observer = false
 
-	}(f)
+	}()
 }

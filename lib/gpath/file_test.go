@@ -24,5 +24,5 @@ func TestFile(t *testing.T) {
 	file.AppendString("pppp")
 	time.Sleep(4 * time.Second)
 	file.AppendString("ppppss")
-
+	time.Sleep(4 * time.Second)
 }
