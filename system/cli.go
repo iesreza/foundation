@@ -3,7 +3,7 @@ package system
 import (
 	"bufio"
 	"fmt"
-	"github.com/iesreza/foundation/lib/log"
+	"github.com/iesreza/foundation/lib/cmd"
 	"github.com/iesreza/go-flags"
 	"os"
 	"reflect"
@@ -44,10 +44,10 @@ func ListenCLI() {
 	fmt.Println("Type help to see commands")
 
 	for {
-		cmd := WaitForConsole(GetConfig().App.Title + ">")
-		if strings.TrimSpace(cmd) != "" {
-			if !TryParseCommand(cmd) {
-				log.Error("Invalid command: " + cmd)
+		cmdin := WaitForConsole(GetConfig().App.Title + ">")
+		if strings.TrimSpace(cmdin) != "" {
+			if !TryParseCommand(cmdin) {
+				cmd.Error("Invalid command: " + cmdin)
 			}
 		}
 	}

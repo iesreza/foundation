@@ -26,6 +26,7 @@ How to use:
 - [ ] Port adminlte
 - [ ] Integrate general js library
 - [ ] Integrate github actions
+- [x] Configuration Reader for all components
 - [x] Bind form data to models
 
 # Branches git
