@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c6b3034-205e-4392-a7c8-4561edf87f07" name="Default Changelist" comment="Update gitignore">
-      <change afterPath="$PROJECT_DIR$/lib/gpath/file.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/gpath/file_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/object/object.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/object/object_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/gpath/functions.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/gpath/functions.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,40 +34,43 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/json.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/gpath/file.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="172" column="25" selection-start-line="172" selection-start-column="25" selection-end-line="172" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/gpath/test.file">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+            <state relative-caret-position="124">
+              <caret line="47" column="21" selection-start-line="47" selection-start-column="21" selection-end-line="47" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/gpath/file_test.go">
+        <entry file="file://$PROJECT_DIR$/lib/object/object.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+            <state relative-caret-position="294">
+              <caret line="119" selection-start-line="119" selection-end-line="119" />
               <folding>
-                <element signature="e#15#43#0" expanded="true" />
+                <element signature="e#16#48#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/object/object_test.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="299">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+              <folding>
+                <element signature="e#16#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/expose/controller.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="12" selection-start-line="12" selection-end-line="14" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -84,19 +85,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/Go/src/os/file.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="191" column="15" selection-start-line="191" selection-start-column="15" selection-end-line="191" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/gpath/functions.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="124" selection-start-line="124" selection-end-line="124" />
+            <state relative-caret-position="1972">
+              <caret line="123" selection-start-line="123" selection-end-line="123" />
             </state>
           </provider>
         </entry>
@@ -191,8 +183,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib/Date.go" />
-        <option value="$PROJECT_DIR$/lib/date_test.go" />
         <option value="$PROJECT_DIR$/system/event/events.go" />
         <option value="$PROJECT_DIR$/system/event.go" />
         <option value="$PROJECT_DIR$/system/menu.go" />
@@ -240,8 +230,10 @@
         <option value="$PROJECT_DIR$/lib/json/json.go" />
         <option value="$PROJECT_DIR$/lib/gpath/functions.go" />
         <option value="$PROJECT_DIR$/lib/gpath/test.file" />
-        <option value="$PROJECT_DIR$/lib/gpath/file.go" />
         <option value="$PROJECT_DIR$/lib/gpath/file_test.go" />
+        <option value="$PROJECT_DIR$/lib/gpath/file.go" />
+        <option value="$PROJECT_DIR$/lib/object/object_test.go" />
+        <option value="$PROJECT_DIR$/lib/object/object.go" />
       </list>
     </option>
   </component>
@@ -274,7 +266,7 @@
               <item name="foundation" type="b2602c69:ProjectViewProjectNode" />
               <item name="foundation" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="gpath" type="462c0819:PsiDirectoryNode" />
+              <item name="object" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -331,7 +323,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.TestFile in github.com/iesreza/foundation/lib/gpath">
+  <component name="RunManager" selected="Go Test.TestNew in github.com/iesreza/foundation/lib/object">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="foundation" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -363,8 +355,31 @@
       <pattern value="^TestFile$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestNew in github.com/iesreza/foundation/lib/object" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="foundation" />
+      <working_directory value="$PROJECT_DIR$/lib/object" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iesreza/foundation/lib/object" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestNew$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="file_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="foundation" />
+      <working_directory value="$PROJECT_DIR$/lib/gpath" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/iesreza/foundation" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/lib/gpath/file_test.go" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestNew in github.com/iesreza/foundation/lib/object" />
+        <item itemvalue="Go Test.file_test.go" />
         <item itemvalue="Go Test.TestFile in github.com/iesreza/foundation/lib/gpath" />
         <item itemvalue="Go Test.TestExpose_Parse in github.com/iesreza/foundation/components/expose" />
         <item itemvalue="Go Build.go build main.go" />
@@ -372,42 +387,42 @@
     </recent_temporary>
   </component>
   <component name="TestHistory">
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 49m 01s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="file_test_go - 2020.02.17 at 22h 32m 11s.xml">
+      <configuration name="file_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 52m 48s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 25m 52s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 53m 03s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 27m 07s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 54m 00s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 29m 30s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 54m 24s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 33m 57s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 54m 39s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 37m 13s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 55m 02s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 38m 01s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 56m 02s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 40m 44s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 56m 23s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.17 at 23h 46m 32s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="TestFile_in_github_com_iesreza_foundation_lib_gpath - 2020.02.17 at 00h 56m 39s.xml">
-      <configuration name="TestFile in github.com/iesreza/foundation/lib/gpath" configurationId="GoTestRunConfiguration" />
+    <history-entry file="TestNew_in_github_com_iesreza_foundation_lib_object - 2020.02.18 at 00h 29m 05s.xml">
+      <configuration name="TestNew in github.com/iesreza/foundation/lib/object" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1513" height="973" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28591067" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29415807" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -499,30 +514,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/router/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="48" column="39" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
-          <folding>
-            <element signature="e#16#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/router/request.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3961">
-          <caret line="244" column="45" selection-start-line="244" selection-start-column="45" selection-end-line="244" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Go/src/builtin/builtin.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1190">
-          <caret line="70" column="5" selection-start-line="70" selection-start-column="5" selection-end-line="70" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/String.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2992">
@@ -654,20 +645,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/expose/controller.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/expose/ql.parser.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/components/expose/graphql.test" />
     <entry file="file://$PROJECT_DIR$/components/dashboard/models.go">
       <provider selected="true" editor-type-id="text-editor" />
@@ -770,6 +747,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/json.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/gpath/test.file">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/gpath/file_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/os/file.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3111">
+          <caret line="191" column="15" selection-start-line="191" selection-start-column="15" selection-end-line="191" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/gpath/functions.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1972">
+          <caret line="123" selection-start-line="123" selection-end-line="123" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/system/bootstrap.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2244">
@@ -794,17 +806,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Go/src/os/file.go">
+    <entry file="file://$PROJECT_DIR$/lib/gpath/file.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="191" column="15" selection-start-line="191" selection-start-column="15" selection-end-line="191" selection-end-column="15" />
+        <state relative-caret-position="124">
+          <caret line="47" column="21" selection-start-line="47" selection-start-column="21" selection-end-line="47" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/json.go">
+    <entry file="file://$PROJECT_DIR$/components/expose/ql.parser.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="136">
+          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/expose/controller.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" selection-start-line="12" selection-end-line="14" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -815,33 +834,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gpath/test.file">
+    <entry file="file://C:/Go/src/reflect/type.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        <state relative-caret-position="158">
+          <caret line="570" column="5" selection-start-line="570" selection-start-column="5" selection-end-line="570" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gpath/functions.go">
+    <entry file="file://$PROJECT_DIR$/lib/object/object_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="124" selection-start-line="124" selection-end-line="124" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gpath/file.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="172" column="25" selection-start-line="172" selection-start-column="25" selection-end-line="172" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gpath/file_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="299">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding>
-            <element signature="e#15#43#0" expanded="true" />
+            <element signature="e#16#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/object/object.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="119" selection-start-line="119" selection-end-line="119" />
+          <folding>
+            <element signature="e#16#48#0" expanded="true" />
           </folding>
         </state>
       </provider>
