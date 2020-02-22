@@ -1,4 +1,4 @@
-package object
+package ref
 
 import (
 	"fmt"
@@ -84,18 +84,21 @@ func (o wrapedStruct) Invoke(name string, args ...interface{}) (reflect.Value, e
 	}
 	return method.Call(in)[0], nil
 }
+
 func (o obj) Invoke(name string, args ...interface{}) (reflect.Value, error) {
 	if !o.IsPointer {
 		return reflect.Value{}, fmt.Errorf("object is not an pointer")
 	}
 	return o.internal.Invoke(name, args...)
 }
+
 func (o obj) Set(key string, value interface{}) error {
 	if !o.IsPointer {
 		return fmt.Errorf("object is not an pointer")
 	}
 	return o.Set(key, value)
 }
+
 func (o wrapedStruct) Set(key string, value interface{}) error {
 	ps := reflect.ValueOf(o.obj)
 	s := ps.Elem()
