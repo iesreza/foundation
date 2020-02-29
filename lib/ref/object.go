@@ -14,21 +14,24 @@ type obj struct {
 	Fields    []reflect.StructField
 	Methods   []reflect.Method
 	internal  wrapedStruct
+	ref       reflect.Type
 }
 
 func Parse(v interface{}) obj {
-	ref := reflect.TypeOf(v)
+
 	item := obj{}
-	pkg := strings.Split(ref.String(), ".")[0]
+	item.ref = reflect.TypeOf(v)
+
+	pkg := strings.Split(item.ref.String(), ".")[0]
 	if pkg[0] == '*' {
 		item.IsPointer = true
 		v = reflect.ValueOf(v).Elem().Interface()
-		ref = reflect.TypeOf(v)
+		item.ref = reflect.TypeOf(v)
 		item.internal = wrapedStruct{v}
 	}
-	item.Name = ref.Name()
+	item.Name = item.ref.Name()
 	item.Package = strings.TrimLeft(pkg, "*")
-	item.Path = string(ref.PkgPath())
+	item.Path = string(item.ref.PkgPath())
 
 	indirect := reflect.Indirect(reflect.ValueOf(v))
 	t := indirect.Type()
@@ -92,6 +95,13 @@ func (o obj) Invoke(name string, args ...interface{}) (reflect.Value, error) {
 	return o.internal.Invoke(name, args...)
 }
 
+func (o obj) Get(name string) (reflect.Value, error) {
+	if !o.IsPointer {
+		return reflect.Value{}, fmt.Errorf("object is not an pointer")
+	}
+	return o.internal.Get(name)
+}
+
 func (o obj) Set(key string, value interface{}) error {
 	if !o.IsPointer {
 		return fmt.Errorf("object is not an pointer")
@@ -117,4 +127,13 @@ func (o wrapedStruct) Set(key string, value interface{}) error {
 		return fmt.Errorf("element is not struct")
 	}
 	return nil
+}
+
+func (o wrapedStruct) Get(key string) (reflect.Value, error) {
+	ps := reflect.ValueOf(o.obj)
+	v := reflect.Indirect(ps).FieldByName(key)
+	if !v.IsValid() {
+		return v, fmt.Errorf("%s is not member of %s", key, ps.Type())
+	}
+	return v, nil
 }

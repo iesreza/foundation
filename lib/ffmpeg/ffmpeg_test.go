@@ -6,11 +6,50 @@ import (
 )
 
 func TestGetCodecs(t *testing.T) {
-	fmt.Println(GetDecoders())
-	fmt.Println(SearchDecoder("vorbis"))
-	fmt.Println(HasDecoder("vorbis"))
 
-	fmt.Println(GetEncoders())
-	fmt.Println(SearchEncoder("VP9"))
-	fmt.Println(HasEncoder("libvpx"))
+	/*	var err error
+
+		// Create new instance of transcoder
+		trans := new(transcoder.Transcoder)
+
+		// Initialize transcoder passing the input file path and output file path
+		err = trans.Initialize( "d:/300.mkv", "d:/330.mkv" )
+		// Handle error...
+		fmt.Println( trans.GetCommand() )
+		// Start transcoder process with progress checking
+		done := trans.Run(true)
+
+		// Returns a channel to get the transcoding progress
+		progress := trans.Output()
+
+		// Example of printing transcoding progress
+		for msg := range progress {
+			fmt.Println(msg)
+		}
+
+		// This channel is used to wait for the transcoding process to end
+		err = <-done
+		fmt.Println(err)*/
+
+	ffmpeg := New()
+	ffmpeg.Input(Input{
+		Src: "D:/300.mkv",
+	})
+
+	ffmpeg.Output(Output{
+		Path:  "D:/300.2.mkv",
+		Muxer: "mp4",
+	})
+
+	s := ApplyVideo{
+		Codec:   "libx264",
+		CropTop: "300",
+		Aspect:  "16:9",
+	}
+
+	fmt.Println(s.buildCommand())
+
+	ffmpeg.HwAcceleration("cuvid")
+
+	fmt.Println(ffmpeg.buildCommand())
 }

@@ -1,11 +1,7 @@
 package ffmpeg
 
 import (
-	"bytes"
-	"context"
 	"fmt"
-	"os/exec"
-	"runtime"
 	"time"
 )
 
@@ -18,7 +14,11 @@ var (
 	binPath        = "ffmpeg"
 	decoders       = []*Codec{}
 	encoders       = []*Codec{}
+	accelerators   = []string{}
+	muxers         = []*DMuxer{}
+	demuxers       = []*DMuxer{}
 	defaultTimeout = 10 * time.Second
+	instance       = FFMPEG{}
 )
 
 // SetFFPMPEGBinPath sets the global path to find and execute the ffmpeg program
@@ -35,6 +35,11 @@ const (
 )
 
 type FFMPEG struct {
+	input      []Input
+	output     Output
+	applyVideo ApplyVideo
+	applyAudio ApplyAudio
+	hwaccel    string
 }
 
 type Progress struct {
@@ -45,59 +50,44 @@ type Progress struct {
 	Speed           string
 }
 
+type Tags struct {
+	Encoder string `json:"ENCODER"`
+}
+
 func New() *FFMPEG {
 	p := FFMPEG{}
 	return &p
 }
 
-func runWithTimeout(command string, timeout time.Duration) ([]byte, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	return runContext(ctx, command)
+func (f *FFMPEG) HwAcceleration(v string) {
+	f.hwaccel = v
 }
 
-func runContext(ctx context.Context, command string) ([]byte, error) {
-	var cmd *exec.Cmd
-	var err error
-	command = binPath + " " + command
+func (f *FFMPEG) AutoHwAcceleration() {
+	f.hwaccel = "auto"
+}
 
-	if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/C", command)
-	} else {
-		cmd = exec.Command("bash", "-c", command)
+func (f *FFMPEG) buildCommand() ([]string, error) {
+	pipe := []string{}
+	if len(f.input) == 0 {
+		return pipe, fmt.Errorf("input is empty")
 	}
-
-	var outputBuf bytes.Buffer
-	cmd.Stdout = &outputBuf
-
-	err = cmd.Start()
-	if err == exec.ErrNotFound {
-		return []byte{}, ErrBinNotFound
-	} else if err != nil {
-		return []byte{}, err
+	if f.hwaccel != "" {
+		pipe = append(pipe, "-hwaccel", f.hwaccel)
 	}
-
-	done := make(chan error, 1)
-	go func() {
-		done <- cmd.Wait()
-	}()
-
-	select {
-	case <-ctx.Done():
-		err = cmd.Process.Kill()
-		if err == nil {
-			return []byte{}, ErrTimeout
-		}
-		return []byte{}, err
-	case err = <-done:
+	for _, item := range f.input {
+		p, err := item.buildCommand()
 		if err != nil {
-			return []byte{}, err
+			return pipe, err
 		}
+		pipe = append(pipe, p...)
 	}
 
+	p, err := f.output.buildCommand()
 	if err != nil {
-		return outputBuf.Bytes(), err
+		return pipe, err
 	}
+	pipe = append(pipe, p...)
 
-	return outputBuf.Bytes(), nil
+	return pipe, nil
 }
