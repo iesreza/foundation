@@ -42,12 +42,13 @@ func TestGetCodecs(t *testing.T) {
 	})
 
 	s := ApplyVideo{
-		Codec:   "libx264",
+		Codec:   "h264",
 		CropTop: "300",
 		Aspect:  "16:9",
+		Filter:  []string{"a", "b", "c"},
 	}
 
-	fmt.Println(s.buildCommand())
+	ffmpeg.ApplyVideo(s)
 
 	ffmpeg.HwAcceleration("cuvid")
 

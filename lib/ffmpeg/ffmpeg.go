@@ -35,11 +35,20 @@ const (
 )
 
 type FFMPEG struct {
-	input      []Input
-	output     Output
-	applyVideo ApplyVideo
-	applyAudio ApplyAudio
-	hwaccel    string
+	input         []Input
+	output        Output
+	applyVideo    ApplyVideo
+	applyAudio    ApplyAudio
+	hwaccel       string
+	OverWrite     bool
+	Loop          string `validate="\\d+" switch="-stream_loop"`
+	LimitFileSize string `validate="\\d+[K,M,k,m,G,g]*" switch="-fs"`
+	Threads       string `validate="\\d+" switch="-threads"`
+	Metadata      string `validate=".+" switch="-metadata" separated="true"`
+	VideoSync     bool   `switch="-vsync 1"`
+	AudioSync     bool   `switch="-async 1"`
+	Longest       bool   `switch="-longest"`
+	Shortest      bool   `switch="-shortest"`
 }
 
 type Progress struct {
@@ -68,6 +77,7 @@ func (f *FFMPEG) AutoHwAcceleration() {
 }
 
 func (f *FFMPEG) buildCommand() ([]string, error) {
+
 	pipe := []string{}
 	if len(f.input) == 0 {
 		return pipe, fmt.Errorf("input is empty")
@@ -83,6 +93,16 @@ func (f *FFMPEG) buildCommand() ([]string, error) {
 		pipe = append(pipe, p...)
 	}
 
+	video, err := f.applyVideo.buildCommand()
+	pipe = append(pipe, video...)
+	if err != nil {
+		return pipe, err
+	}
+	audio, err := f.applyAudio.buildCommand()
+	pipe = append(pipe, audio...)
+	if err != nil {
+		return pipe, err
+	}
 	p, err := f.output.buildCommand()
 	if err != nil {
 		return pipe, err
