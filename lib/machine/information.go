@@ -1,18 +1,17 @@
 package machine
 
 import (
-	"encoding/csv"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/gocarina/gocsv"
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/network"
 	"os/exec"
-	"reflect"
 	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 type DiskDrive struct {
@@ -109,15 +108,23 @@ func GetActiveHddSerial() (string, error) {
 
 func GetHardDisks() ([]DiskDrive, error) {
 	if runtime.GOOS == "windows" {
-		res, err := exec.Command("bash", "-c", `wmic DiskDrive get Caption,DeviceID,Model,Partitions,Size,SerialNumber format:csv`).CombinedOutput()
-
+		res, err := exec.Command("cmd", "/C", `wmic DiskDrive get Caption,DeviceID,Model,Partitions,Size,SerialNumber /format:csv`).CombinedOutput()
 		if err != nil {
 			return []DiskDrive{}, err
 		} else {
-			dd := []DiskDrive{}
-			err = parseWmicResult(string(res), &dd)
-			fmt.Println(err)
 
+			dd := []DiskDrive{}
+
+			clean := strings.Map(func(r rune) rune {
+				if unicode.IsPrint(r) || r == '\n' {
+					return r
+				}
+				return -1
+			}, string(res))
+
+			err = gocsv.UnmarshalString(clean, &dd)
+
+			fmt.Printf("%+v", dd)
 			if err == nil {
 				res, err := exec.Command(`cmd`, "/C", `wmic partition where BootPartition=true get DeviceID`).CombinedOutput()
 				if err == nil {
@@ -195,70 +202,6 @@ func GetHardDisks() ([]DiskDrive, error) {
 		}
 	}
 	return []DiskDrive{}, nil
-}
-
-//Parse the csv format output of the RunCmd
-func parseWmicResult(stdout string, dst interface{}) error {
-	dv := reflect.ValueOf(dst).Elem()
-	t := dv.Type().Elem()
-
-	dv.Set(reflect.MakeSlice(dv.Type(), 0, 0))
-
-	lines := strings.Split(stdout, "\n")
-	var header []int = nil
-
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if len(line) > 0 {
-			v := reflect.New(t)
-			r := csv.NewReader(strings.NewReader(line))
-
-			r.FieldsPerRecord = t.NumField() + 1
-
-			records, err := r.ReadAll()
-			if err != nil {
-				return err
-			}
-			//Find the field number of the record
-			if header == nil {
-				header = make([]int, len(records[0]), len(records[0]))
-				for i, record := range records[0] {
-					for j := 0; j < t.NumField(); j++ {
-						if record == t.Field(j).Name {
-							header[i] = j
-						}
-					}
-				}
-				continue
-			} else {
-				for i, record := range records[0] {
-					f := reflect.Indirect(v).Field(header[i])
-					switch t.Field(header[i]).Type.Kind() {
-					case reflect.String:
-						f.SetString(record)
-					case reflect.Uint, reflect.Uint64:
-						uintVal, err := strconv.ParseUint(record, 10, 64)
-						if err != nil {
-							return err
-						}
-						f.SetUint(uintVal)
-					case reflect.Bool:
-						bVal, err := strconv.ParseBool(record)
-						if err != nil {
-							return err
-						}
-						f.SetBool(bVal)
-					default:
-						return errors.New("unknown data type!")
-					}
-				}
-
-			}
-			dv.Set(reflect.Append(dv, reflect.Indirect(v)))
-		}
-	}
-
-	return nil
 }
 
 func GetActiveHardDisk() DiskDrive {

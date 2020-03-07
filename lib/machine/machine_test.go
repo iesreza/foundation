@@ -6,6 +6,6 @@ import (
 )
 
 func Test_Hardwareid(t *testing.T) {
-	fmt.Println(UniqueHwID())
+	//fmt.Println(UniqueHwID())
 	fmt.Println(GetActiveHddSerial())
 }
