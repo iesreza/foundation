@@ -6,6 +6,8 @@ import (
 	"github.com/gocarina/gocsv"
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/network"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/mem"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,6 +15,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 )
 
@@ -35,6 +38,18 @@ type Partition struct {
 	FreeSpacePercent   float64 `json:"free_space_percent"`
 	VolumeSerialNumber string  `json:"volume_serial_number"`
 	Active             bool    `json:"active"`
+}
+
+type Memory struct {
+	Total       uint64
+	Free        uint64
+	Used        uint64
+	UsedPercent float64
+}
+
+type CPU struct {
+	Cores []float64
+	Total float64
 }
 
 func UniqueHwID() (string, error) {
@@ -311,4 +326,35 @@ func GetActivePartition() (Partition, error) {
 		}
 	}
 	return Partition{}, fmt.Errorf("unable to get active partition")
+}
+
+func GetMemory() (Memory, error) {
+	var response Memory
+	v, err := mem.VirtualMemory()
+	if err != nil {
+		return response, err
+	}
+	response.Total = v.Total
+	response.Used = v.Used
+	response.Free = v.Available
+	response.UsedPercent = v.UsedPercent
+	return response, nil
+}
+
+func GetCPUModel() ([]cpu.InfoStat, error) {
+	return cpu.Info()
+}
+
+func GetCPU(interval time.Duration) (CPU, error) {
+	response := CPU{}
+	res, err := cpu.Percent(interval, true)
+	if err != nil {
+		return response, err
+	}
+	response.Cores = res
+	for _, item := range res {
+		response.Total += item
+	}
+	response.Total /= float64(len(res))
+	return response, nil
 }
