@@ -1,4 +1,4 @@
-package router
+package request
 
 import (
 	"net/http"
@@ -82,11 +82,11 @@ func (handle *handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 	bypass := false
 
-	/*	for _, item := range handle.middleware {
+	for _, item := range handle.middleware {
 		if !item(*req) {
 			return false
 		}
-	}*/
+	}
 
 	if handle.domainMatch != nil {
 		if !handle.domainMatch.MatchString(req.Req().Host) {

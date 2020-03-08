@@ -2,7 +2,7 @@ package system
 
 import (
 	"github.com/iesreza/foundation/lib"
-	"github.com/iesreza/foundation/lib/router"
+	"github.com/iesreza/foundation/lib/request"
 	"html/template"
 	"strconv"
 	"strings"
@@ -27,7 +27,7 @@ func (m *Menu) Push(menu ...Menu) {
 
 }
 
-func (m Menu) Render(request *router.Request, attribs ...string) template.HTML {
+func (m Menu) Render(request *request.Request, attribs ...string) template.HTML {
 	html := "<ul class=\"" + m.ParentClass + "\" " + strings.Join(attribs, " ") + ">\n"
 
 	for _, item := range m.SubMenu {
@@ -42,8 +42,8 @@ func (m Menu) Render(request *router.Request, attribs ...string) template.HTML {
 	return template.HTML(html)
 }
 
-func recursiveMenuRender(request *router.Request, m *Menu, depth int) (string, bool) {
-	if !GetUser(*request).HasPerm(m.Permission) {
+func recursiveMenuRender(req *request.Request, m *Menu, depth int) (string, bool) {
+	if !request.GetUser(*req).HasPerm(m.Permission) {
 		return "", false
 	}
 
@@ -67,7 +67,7 @@ func recursiveMenuRender(request *router.Request, m *Menu, depth int) (string, b
 		}
 		temp += "<ul class=\"child depth-" + strconv.Itoa(depth+1) + " " + m.ParentClass + "\">\n"
 		for _, item := range m.SubMenu {
-			t, p := recursiveMenuRender(request, &item, depth+1)
+			t, p := recursiveMenuRender(req, &item, depth+1)
 			if p {
 				for i := 0; i < depth+2; i++ {
 					temp += "\t"

@@ -1,4 +1,4 @@
-package router
+package request
 
 import (
 	"github.com/iesreza/foundation/lib"

@@ -4,7 +4,7 @@ import (
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/gpath"
 	"github.com/iesreza/foundation/lib/log"
-	"github.com/iesreza/foundation/lib/router"
+	"github.com/iesreza/foundation/lib/request"
 	"gopkg.in/yaml.v2"
 	"os"
 	"reflect"
@@ -12,6 +12,7 @@ import (
 )
 
 var configInstance *Config
+var Debug bool
 
 type Log struct {
 	WriteFile bool   `yaml:"write-file"`
@@ -45,6 +46,7 @@ type Config struct {
 		SessionAge    int    `yaml:"session-age"`
 		Language      string `yaml:"language"`
 		MaxUploadSize string `yaml:"max-upload-size"`
+		Debug         bool   `yaml:"debug"`
 	} `yaml:"app"`
 	Server struct {
 		Port  string `yaml:"port"`
@@ -88,14 +90,15 @@ func GetConfig() Config {
 		configInstance.App.OS = runtime.GOOS
 		configInstance.App.ProcessID = os.Getpid()
 
-		router.MaxUploadSize, _ = lib.ParseSize(configInstance.App.MaxUploadSize)
+		request.MaxUploadSize, _ = lib.ParseSize(configInstance.App.MaxUploadSize)
+		Debug = configInstance.App.Debug
 	}
 	return *configInstance
 }
 
 func LoadConfig(path string, out interface{}) {
 	if reflect.TypeOf(out).String()[0] != '*' {
-		log.Error("Passed object to system.LoadConfig is not pointer")
+		log.Critical("Passed object to system.LoadConfig is not pointer")
 		return
 	}
 	var err error

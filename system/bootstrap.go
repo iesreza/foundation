@@ -5,7 +5,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/log"
-	"github.com/iesreza/foundation/lib/router"
+	"github.com/iesreza/foundation/lib/request"
 	"github.com/ztrue/shutdown"
 	"os"
 	"runtime"
@@ -16,7 +16,7 @@ import (
 
 func Boot() {
 	SetupRouter()
-	router.SessionAge = time.Duration(config.App.SessionAge) * time.Second
+	request.SessionAge = time.Duration(config.App.SessionAge) * time.Second
 	StartWebServer()
 
 	for _, item := range Components {

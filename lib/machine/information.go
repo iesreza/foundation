@@ -152,7 +152,6 @@ func GetHardDisks() ([]DiskDrive, error) {
 
 			err = gocsv.UnmarshalString(clean, &dd)
 
-			fmt.Printf("%+v", dd)
 			if err == nil {
 				res, err := exec.Command(`cmd`, "/C", `wmic partition where BootPartition=true get DeviceID`).CombinedOutput()
 				if err == nil {

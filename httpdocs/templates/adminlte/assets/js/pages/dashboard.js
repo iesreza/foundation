@@ -2,14 +2,14 @@
  * Author: Abdullah A Almsaeed
  * Date: 4 Jan 2014
  * Description:
- *      This is a demo file used only for the main dashboard (index.html)
+ *      This is a demo file used only for the main admin (index.html)
  **/
 
 $(function () {
 
   'use strict'
 
-  // Make the dashboard widgets sortable Using jquery UI
+  // Make the admin widgets sortable Using jquery UI
   $('.connectedSortable').sortable({
     placeholder         : 'sort-highlight',
     connectWith         : '.connectedSortable',

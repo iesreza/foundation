@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/iesreza/foundation/components/dashboard"
+	"github.com/iesreza/foundation/components/admin"
 	"github.com/iesreza/foundation/components/docker"
 	"github.com/iesreza/foundation/components/expose"
 	"github.com/iesreza/foundation/httpdocs/templates/adminlte"
@@ -18,7 +18,7 @@ func main() {
 	language.Register()
 	//Register user components
 	adminlte.Register()
-	dashboard.Register()
+	admin.Register()
 	expose.Register()
 
 	system.Boot()

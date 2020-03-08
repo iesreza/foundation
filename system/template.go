@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/iesreza/foundation/lib/router"
+	"github.com/iesreza/foundation/lib/request"
 	"github.com/iesreza/gutil/path"
 	"html/template"
 )
@@ -42,7 +42,7 @@ type JS struct {
 	Attribs []string
 }
 
-func (t Template) RenderLayout(request *router.Request, layout string, data map[string]interface{}) []byte {
+func (t Template) RenderLayout(request *request.Request, layout string, data map[string]interface{}) []byte {
 	buf := new(bytes.Buffer)
 	data["App"] = config.App
 	for key, menu := range (*t.Interface).Menu() {

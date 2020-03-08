@@ -1,4 +1,4 @@
-package dashboard
+package admin
 
 import (
 	"fmt"
@@ -29,9 +29,9 @@ func (component component) AssetsPath() string {
 }
 
 var Component = component{
-	Path:   "components/dashboard/",
-	Assets: "components/dashboard/assets/",
-	Views:  "components/dashboard/views/",
+	Path:   "components/admin/",
+	Assets: "components/admin/assets/",
+	Views:  "components/admin/views/",
 }
 
 func Register() {
@@ -40,7 +40,7 @@ func Register() {
 }
 
 func (component *component) Register() {
-	system.Components["dashboard"] = component
+	system.Components["admin"] = component
 	files, err := path.Dir(component.Views).Find("*.html")
 	if err != nil {
 		log.Critical(fmt.Errorf("unable to parse template html files %s", err.Error()))
@@ -75,29 +75,29 @@ func (component *component) Register() {
 func (component *component) Menu() {
 	adminlte.MainNav.Push(
 		system.Menu{
-			Name: "MainMenu", Title: "Home", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+			Name: "MainMenu", Title: "Home", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 			SubMenu: []system.Menu{
 				system.Menu{
-					Name: "MainMenu", Title: "->1", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->1", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->2", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->3", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->3", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 			}},
 		system.Menu{
-			Name: "MainMenu2", Title: "Home2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+			Name: "MainMenu2", Title: "Home2", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 			SubMenu: []system.Menu{
 				system.Menu{
-					Name: "MainMenu", Title: "->1", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->1", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->2", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->3", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->3", Permission: "", URL: "admin", Icon: "fa-home", Class: "home",
 				},
 			}},
 	)

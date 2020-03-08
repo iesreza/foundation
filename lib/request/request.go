@@ -1,6 +1,7 @@
-package router
+package request
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"github.com/gorilla/schema"
 	"io"
@@ -14,23 +15,37 @@ import (
 )
 
 type Request struct {
-	writer     http.ResponseWriter
-	request    *http.Request
-	Parameters map[string]value
-	Query      url.Values
-	Form       url.Values
-	Data       map[string]interface{}
-	Files      map[string][]FileUpload
-	Session    Session
-	Cookie     map[string]http.Cookie
-	Matched    bool
-	IsAdmin    bool
-	terminated bool
+	writer      http.ResponseWriter
+	request     *http.Request
+	Parameters  Parameter
+	Query       url.Values
+	Form        url.Values
+	Path        string
+	ContentType ContentType
+	Data        Data
+	Files       File
+	Session     Session
+	Cookie      Cookie
+	Matched     bool
+	IsAdmin     bool
+	terminated  bool
 }
 type message struct {
 	Message string
 	Type    string
 }
+
+type Cookie map[string]http.Cookie
+type Data map[string]interface{}
+type Parameter map[string]value
+type File map[string][]FileUpload
+type ContentType string
+
+const (
+	REQ_JSON             = "application/json"
+	REQ_FORM_URL_ENCODED = "application/x-www-form-urlencoded"
+	REQ_FORM_MULTI_PART  = "multipart/form-data"
+)
 
 type FileUpload struct {
 	Name        string
@@ -41,6 +56,44 @@ type FileUpload struct {
 }
 
 var MaxUploadSize int64 = 32 << 20
+
+func (c Cookie) Get(key string) *http.Cookie {
+	if val, ok := c[key]; ok {
+		return &val
+	}
+	return nil
+}
+func (c Data) Get(key string) *interface{} {
+	if val, ok := c[key]; ok {
+		return &val
+	}
+	return nil
+}
+func (c File) Get(key string) *[]FileUpload {
+	if val, ok := c[key]; ok {
+		return &val
+	}
+	return nil
+}
+func (c Parameter) Get(key string) *value {
+	if val, ok := c[key]; ok {
+		return &val
+	}
+	return nil
+}
+
+func (c *Cookie) Set(key string, v http.Cookie) {
+	(*c)[key] = v
+}
+func (c *Data) Set(key string, v interface{}) {
+	(*c)[key] = v
+}
+func (c *File) Set(key string, v []FileUpload) {
+	(*c)[key] = v
+}
+func (c *Parameter) Set(key string, v value) {
+	(*c)[key] = v
+}
 
 func NewRequest(writer http.ResponseWriter, request *http.Request) Request {
 	req := Request{
@@ -209,14 +262,15 @@ func (req *Request) Terminate() {
 func (req *Request) Unmarshal(output interface{}) error {
 	//guess data type
 
-	if req.Req().Header.Get("Content-Type") == "application/json" {
+	if req.ContentType == REQ_JSON {
+
 		return json.NewDecoder(req.Req().Body).Decode(output)
 	}
-	if req.Req().Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+	if req.ContentType == REQ_FORM_URL_ENCODED {
 		req.Req().ParseForm()
 		return schema.NewDecoder().Decode(output, req.Req().Form)
 	}
-	if strings.HasPrefix(req.Req().Header.Get("Content-Type"), "multipart/form-data") {
+	if strings.HasPrefix(string(req.ContentType), REQ_FORM_MULTI_PART) {
 		return schema.NewDecoder().Decode(output, req.Req().MultipartForm.Value)
 
 	}
@@ -225,10 +279,12 @@ func (req *Request) Unmarshal(output interface{}) error {
 
 func (req *Request) parseForm() {
 	req.Query = req.Req().URL.Query()
-	if req.Req().Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+	req.ContentType = ContentType(req.Req().Header.Get("Content-Type"))
+	req.Path = strings.TrimRight(req.request.URL.Path, "/")
+	if req.ContentType == REQ_FORM_URL_ENCODED {
 		req.Req().ParseForm()
 		req.Form = req.Req().Form
-	} else if strings.HasPrefix(req.Req().Header.Get("Content-Type"), "multipart/form-data") {
+	} else if strings.HasPrefix(string(req.ContentType), REQ_FORM_MULTI_PART) {
 
 		req.Req().ParseMultipartForm(MaxUploadSize)
 		req.Form = req.Req().MultipartForm.Value
@@ -270,4 +326,33 @@ func (file FileUpload) Move(dst string) error {
 	io.Copy(f, src)
 
 	return nil
+}
+
+func (req Request) GetUser() *User {
+	user, exist := req.Session.Get("user")
+	if exist {
+		user.(*User).LastActivity = time.Now().Unix()
+		return user.(*User)
+	}
+	res := &User{
+		Guest: true,
+	}
+	req.Session.Set("user", res)
+	return res
+}
+
+func (req Request) GetRedirect() string {
+	redirect := ""
+	if req.Query.Get("redirect") != "" {
+		b, err := base64.StdEncoding.DecodeString(req.Query.Get("redirect"))
+		if err == nil {
+			return string(b)
+		}
+	}
+	redirect = req.request.URL.Path
+	if req.request.URL.RawQuery != "" {
+		redirect += "?" + req.request.URL.RawQuery
+	}
+
+	return redirect
 }

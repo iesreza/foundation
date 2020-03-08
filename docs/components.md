@@ -8,10 +8,10 @@ The foundation could uses one or more components at same time depend on develope
 Each component base on the application logic could consist several parts. 
 
 
-   - [component.go](../components/dashboard/component.go) implements essential parts of component including views,paths,menus,permissions,installation/update/uninstall procedures and etc.
-   - [view.go](../components/dashboard/component.go) Could implement views if required by the application logic. it will load html templates and render it by substitute variables as it is declared inside the view template the dispatch it to the user.
-   - [models.go](../components/dashboard/component.go) Used to implement models.
-   - [controller.go](../components/dashboard/component.go) Implements actions of component such as read from/write to database or compute things. 
+   - [component.go](../components/admin/component.go) implements essential parts of component including views,paths,menus,permissions,installation/update/uninstall procedures and etc.
+   - [view.go](../components/admin/component.go) Could implement views if required by the application logic. it will load html templates and render it by substitute variables as it is declared inside the view template the dispatch it to the user.
+   - [models.go](../components/admin/component.go) Used to implement models.
+   - [controller.go](../components/admin/component.go) Implements actions of component such as read from/write to database or compute things. 
    - assets Used to server static files and resources. assets should be introduced in component.go to be able to getting used.
    - views Used to serve views templates
    
@@ -39,7 +39,7 @@ type Component interface {
 ```go
 func (component *component) Register() {
 	// put component as given name to list of registered components
-	system.Components["dashboard"] = component
+	system.Components[admin] = component
 	
 	// search for templates in views folder
 	files, err := path.Dir(component.Views).Find("*.html")
@@ -84,31 +84,31 @@ func (component *component) Menu() {
 		
 		//Push root
 		system.Menu{
-			Name: "MainMenu", Title: "Home", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+			Name: "MainMenu", Title: "Home", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 			
 			//Push sub menu
 			SubMenu: []system.Menu{
 				system.Menu{
-					Name: "MainMenu", Title: "->1", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->1", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->2", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->3", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->3", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 			}},
 		system.Menu{
-			Name: "MainMenu2", Title: "Home2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+			Name: "MainMenu2", Title: "Home2", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 			SubMenu: []system.Menu{
 				system.Menu{
-					Name: "MainMenu", Title: "->1", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->1", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->2", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->2", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 				system.Menu{
-					Name: "MainMenu", Title: "->3", Permission: "", URL: "dashboard", Icon: "fa-home", Class: "home",
+					Name: "MainMenu", Title: "->3", Permission: "", URL: admin, Icon: "fa-home", Class: "home",
 				},
 			}},
 	)

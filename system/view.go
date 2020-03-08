@@ -2,7 +2,7 @@ package system
 
 import (
 	"bytes"
-	"github.com/iesreza/foundation/lib/router"
+	"github.com/iesreza/foundation/lib/request"
 	"html/template"
 	"strings"
 )
@@ -15,7 +15,7 @@ type view struct {
 	isRendered     bool
 	isDataPrepared bool
 	Template       *Template
-	Request        *router.Request
+	Request        *request.Request
 	StyleSheets    []CSS
 	Scripts        []JS
 }
@@ -123,7 +123,7 @@ func (v view) prepareData(args []map[string]interface{}) {
 	v.isDataPrepared = true
 }
 
-func View(req *router.Request) *view {
+func View(req *request.Request) *view {
 	return &view{
 		Layout:   "index",
 		Template: GetTemplate(),

@@ -15,6 +15,7 @@ app:
   static: ./httpdocs/static
   session-age: 60
   max-upload-size: 5mb
+  debug: true
 # Server configurations
 server:
   host: "0.0.0.0"

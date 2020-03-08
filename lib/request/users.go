@@ -1,8 +1,8 @@
-package system
+package request
 
 import (
+	"fmt"
 	"github.com/iesreza/foundation/lib"
-	"github.com/iesreza/foundation/lib/router"
 	"time"
 )
 
@@ -20,7 +20,20 @@ type User struct {
 	LastOTP      int64
 }
 
-func GetUser(req router.Request) *User {
+func Login(username, password string) (*User, error) {
+	if username == "test" && password == "test" {
+		u := User{
+			Username: username,
+			Name:     username,
+			Guest:    false,
+		}
+		return &u, nil
+	}
+
+	return &User{Guest: true}, fmt.Errorf("invalid username and password")
+}
+
+func GetUser(req Request) *User {
 	user, exist := req.Session.Get("user")
 	if exist {
 		user.(*User).LastActivity = time.Now().Unix()
@@ -33,7 +46,7 @@ func GetUser(req router.Request) *User {
 	return res
 }
 
-func (user *User) EstablishSession(req router.Request) {
+func (user *User) EstablishSession(req Request) {
 	req.Session.Set("user", user)
 }
 
@@ -43,7 +56,7 @@ func (user *User) IsGuest() bool {
 
 func (user *User) SetPassword(password string) {
 	user.Password = lib.GeneratePassword(password)
-	user.Save()
+	//user.Save()
 }
 
 func CheckAuthentication(username, password string) bool {
@@ -51,6 +64,6 @@ func CheckAuthentication(username, password string) bool {
 	return false
 }
 
-func (user *User) Save() {
+/*func (user *User) Save() {
 	Database.Update(user)
-}
+}*/
