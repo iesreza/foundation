@@ -6,7 +6,9 @@ import (
 	"github.com/gocarina/gocsv"
 	"github.com/iesreza/foundation/lib"
 	"github.com/iesreza/foundation/lib/network"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -22,6 +24,17 @@ type DiskDrive struct {
 	Size         uint64 `json:"size"`
 	SerialNumber string `json:"serial_number"`
 	Active       bool   `json:"active"`
+}
+
+type Partition struct {
+	Name               string  `json:"name" csv:"DeviceID"`
+	FileSystem         string  `json:"file_system"`
+	Size               uint64  `json:"size"`
+	FreeSpace          uint64  `json:"free_space"`
+	UsedSpace          uint64  `json:"used_space"`
+	FreeSpacePercent   float64 `json:"free_space_percent"`
+	VolumeSerialNumber string  `json:"volume_serial_number"`
+	Active             bool    `json:"active"`
 }
 
 func UniqueHwID() (string, error) {
@@ -214,4 +227,88 @@ func GetActiveHardDisk() DiskDrive {
 	}
 
 	return DiskDrive{}
+}
+
+func GetPartitions() ([]Partition, error) {
+	partitions := []Partition{}
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+
+	if runtime.GOOS == "windows" {
+		res, err := exec.Command("cmd", "/C", `wmic LogicalDisk Where DriveType=3 Get DeviceID,FileSystem,Size,FreeSpace,VolumeSerialNumber /format:csv`).CombinedOutput()
+
+		clean := strings.Map(func(r rune) rune {
+			if unicode.IsPrint(r) || r == '\n' {
+				return r
+			}
+			return -1
+		}, string(res))
+
+		activeDrive := strings.Split(dir, ":")[0] + ":"
+		if err == nil {
+
+			err = gocsv.UnmarshalString(clean, &partitions)
+			for k, item := range partitions {
+				partitions[k].UsedSpace = item.Size - item.FreeSpace
+				partitions[k].FreeSpacePercent = float64(item.FreeSpace) * 100 / float64(item.Size)
+				partitions[k].Active = activeDrive == item.Name
+			}
+			return partitions, nil
+		}
+	} else {
+		res, err := exec.Command("bash", "-c", "df -T").CombinedOutput()
+		if err == nil {
+			lines := strings.Split(string(res), "\n")
+			foundActive := false
+			for _, line := range lines {
+				fields := strings.Fields(line)
+				if len(fields) == 7 && strings.HasPrefix(fields[0], "/dev/") && !strings.HasPrefix(fields[0], "/dev/loop") {
+					partition := Partition{}
+					partition.Name = fields[6]
+					partition.FileSystem = fields[1]
+					partition.Size, _ = strconv.ParseUint(fields[2], 10, 64)
+					partition.Size *= uint64(1024)
+					partition.UsedSpace, _ = strconv.ParseUint(fields[3], 10, 64)
+					partition.UsedSpace *= uint64(1024)
+					partition.FreeSpace = partition.Size - partition.UsedSpace
+					partition.FreeSpacePercent = float64(partition.FreeSpace) * 100 / float64(partition.Size)
+					if partition.Name != "/" {
+						if foundActive == false && strings.HasPrefix(dir, partition.Name) {
+							foundActive = true
+							partition.Active = true
+						}
+					}
+
+					res, err := exec.Command("bash", "-c", "findmnt -fn -o UUID "+fields[0]).CombinedOutput()
+					if err == nil {
+						partition.VolumeSerialNumber = strings.TrimSpace(string(res))
+					}
+					partitions = append(partitions, partition)
+				}
+			}
+			if foundActive == false {
+				for k, partition := range partitions {
+					if partition.Name == "/" {
+						partitions[k].Active = true
+					}
+				}
+			}
+
+			return partitions, nil
+		}
+
+	}
+	return partitions, fmt.Errorf("unable to get partitions")
+
+}
+
+func GetActivePartition() (Partition, error) {
+	partitions, err := GetPartitions()
+	if err == nil {
+		for _, item := range partitions {
+			if item.Active {
+				return item, nil
+			}
+		}
+	}
+	return Partition{}, fmt.Errorf("unable to get active partition")
 }
