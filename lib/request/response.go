@@ -9,6 +9,23 @@ type Response struct {
 	Redirect string
 }
 
+func (r *Request) ResponseJSON(success bool, msg string, data interface{}, redirect string) error {
+	if r.terminated {
+		return nil
+	}
+	b, err := json.Marshal(Response{
+		success, msg, data, redirect,
+	})
+	if err == nil {
+		r.writer.Header().Set("Content-Type", "application/json")
+		r.writer.Write(b)
+		r.Terminate()
+		return nil
+	} else {
+		return err
+	}
+}
+
 func (r *Request) Response(success bool, msg string, data interface{}, redirect string) error {
 	if r.terminated {
 		return nil

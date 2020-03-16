@@ -1,6 +1,7 @@
 package request
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"regexp"
@@ -182,6 +183,7 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 
 		if handle.static {
 			path := handle.staticDir + "/" + strings.Join(uriTokens[p:], "/")
+			fmt.Println(path)
 			if fileExists(path) {
 				if handle.Callback != nil {
 					handle.Callback(*req)
@@ -192,6 +194,7 @@ func recursiveMatch(uriTokens []string, handle *Route, req *Request) bool {
 				return true
 			} else {
 				req.writer.WriteHeader(404)
+				req.Terminate()
 			}
 
 			return false
